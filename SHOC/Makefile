@@ -8,7 +8,8 @@ BENCHMARKS=\
 	reduction \
 	ss_sort \
 	stencil \
-	triad
+	triad \
+	mm
 
 CFLAGS=-O3 -Wall -Wno-unused-label
 

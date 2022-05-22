@@ -1,0 +1,5 @@
+partition,cyclic,x,8192,4,2
+partition,cyclic,y,8192,4,2
+partition,cyclic,z,8192,4,2
+pipeline,mm,1
+cycle_time,6

@@ -1,0 +1,43 @@
+Matrix multiplication in aladdin
+
+Changed files:
+
+/workspace/gem5-aladdin/src/aladdin/SHOC
+Makefile
+
+/workspace/gem5-aladdin/src/aladdin/SHOC/mm
+mm.c
+mm.h
+Makefile
+
+/workspace/gem5-aladdin/src/aladdin/SHOC/mm/example
+config_example
+
+
+Commands to run:
+
+1. If already done earlier, skip this step 
+> cd /workspace/gem5-aladdin/src/aladdin/common
+> make
+
+2. Change directory to SHOC/mm
+> cd /workspace/gem5-aladdin/src/aladdin/SHOC/mm
+
+3. Make mm
+> make run-trace -no-pie
+
+4. If there are changes in mm.c or mm.h, run this
+> g++ -O0 -fno-inline -o mm-instrumented full.s -lm -lz -lpthread -no-pie
+> ./mm-instrumented
+
+5. Run mm with config in example/ folder 
+> cd example/
+> /workspace/gem5-aladdin/src/aladdin/common/aladdin mm ../dynamic_trace.gz config_example
+
+
+Save new image with docker to save all these changes. Do it while running the container.
+> docker ps 
+CONTAINER ID   IMAGE                 COMMAND       CREATED       STATUS       PORTS     NAMES
+112187f2f696   xyzsam/gem5-aladdin   "/bin/bash"   2 hours ago   Up 2 hours             quizzical_nobel
+
+> docker commit 112187f2f696 mm-gem5-aladdin
