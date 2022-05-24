@@ -4,11 +4,11 @@
 #include "gem5/dma_interface.h"
 #endif
 
-void add(int a, int b){
+int add(int a, int b){
     return (a + b);
 }
 
-void mult(int a, int b){
+int mult(int a, int b){
     return (a*b);
 }
 
@@ -21,12 +21,12 @@ void mm(int *x, int *y, int *z){
   int i, k, j, temp_x, temp_y, temp_z, temp_mult, temp_sum;
         loopi:for ( i = 0; i < N; i++){
                 loopk:for (k = 0; k < N; k++){
-                        temp_x = x[i * N + j];
+                        temp_x = x[i * N + k];
                         loopj:for (j = 0; j < N; j++){
                                 temp_y = y[k * N + j];
                                 temp_z = z[i * N + j];
                                 temp_mult = mult(temp_x, temp_y);
-                                z[i * N + j] = add(temp_z, temp_mult)
+                                z[i * N + j] = add(temp_z, temp_mult);
                                 // z[i * N + j] += temp_x * y[k * N + j];
                         }
 
