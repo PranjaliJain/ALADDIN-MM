@@ -61,22 +61,12 @@ int main(int argc, char* argv[]){
     }
     else printf("Cryptographic Addition test passed!\n");
 
-    printf("Test: multiplying %d and %d where both are encrypted\n", value, mul_val);
-    tuple ct3 = encrypt(publicKey, n, q, t, polymod, mul_val);
-    tuple mul_ct = crypto_mul(ciphertext, ct3, q, polymod);
-    int enc_mul_result = decrypt(secretKey, n, q, t, polymod, mul_ct);
-    if(enc_mul_result != (mul_val * value)%t){
-        printf("Crypto Mul test failed!\n result: %d\n expected: %d\n", 
-                enc_mul_result, (mul_val*value)%t);
-    }
-    else printf("Cryptographic Addition test passed!\n");
-
 
     printf("Operation finished fully\n");
     free_poly(secretKey); free_poly(polymod);
     free_tuple(ciphertext); free_tuple(publicKey);
     free_tuple(add_ciphertext); free_tuple(mul_ciphertext);
     free_tuple(ct2); free_tuple(add_ct);
-    free_tuple(ct3); free_tuple(mul_ct);
+   
     return 0;
 }
