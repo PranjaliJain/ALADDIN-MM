@@ -77,7 +77,9 @@ void ScratchpadDatapath::initBaseAddress() {
     const std::string& part_name = node->get_array_label();
     if (user_params.partition.find(part_name) == user_params.partition.end()) {
       std::cerr << "Unknown partition : " << part_name
-                << " at node: " << node->get_node_id() << std::endl;
+                << " at node: " << node->get_node_id() << "array label: "
+		<< node->get_array_label()
+       		<< "dynamic mem op: " << node->is_dynamic_mem_op() << std::endl;
       exit(-1);
     }
   }

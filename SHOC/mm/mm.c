@@ -1,4 +1,5 @@
 #include "mm.h"
+#include <time.h>
 
 #ifdef DMA_MODE
 #include "gem5/dma_interface.h"
@@ -46,8 +47,11 @@ int main()
     int i, j, k;
     int max, min;
 
-        srand(8650341L);
-        max = 2147483646;
+        //srand(8650341L);
+        //max = 2147483646;
+
+        srand(time(NULL));
+        max = 10;
         min = 0;
 
 
@@ -59,9 +63,13 @@ int main()
         {
                 for(j=0;j<N ;j++)
                 {
-                        z[i * (N ) + j] = 0;
-                        x[i * (N ) + j] = rand();
-                        y[i * (N ) + j] = rand();
+                        z[i * (N) + j] = 0;
+                        x[i * (N) + j] = (rand() % (max - min)) + min;
+                        y[i * (N) + j] = (rand() % (max - min)) + min;
+                        //x[i * (N ) + j] = (TYPE)(((double) rand() / (RAND_MAX)) * (max - min) + min ) ;
+                        //y[i * (N ) + j] = (TYPE)(((double) rand() / (RAND_MAX)) * (max - min) + min ) ;
+                        //x[i * (N) + j] = rand();
+                        //y[i * (N) + j] = rand();
                 }
         }
 

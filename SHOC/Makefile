@@ -9,7 +9,8 @@ BENCHMARKS=\
 	ss_sort \
 	stencil \
 	triad \
-	mm
+	mm \
+        encrypt
 
 CFLAGS=-O3 -Wall -Wno-unused-label
 
