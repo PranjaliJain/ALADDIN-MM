@@ -1,0 +1,23 @@
+===============================
+        Aladdin Results        
+===============================
+Running : encrypt
+Top level function: plain_mul
+Cycle : 1873 cycles
+Upsampled Cycle : 0 cycles
+Avg Power: 1389.97 mW
+Idle FU Cycles: 1137 cycles
+Avg FU Power: 0.652837 mW
+Avg FU Dynamic Power: 0.532935 mW
+Avg FU leakage Power: 0.119902 mW
+Avg MEM Power: 1389.32 mW
+Avg MEM Dynamic Power: 3.15666 mW
+Avg MEM Leakage Power: 1386.16 mW
+Total Area: 8.97991e+07 uM^2
+FU Area: 11104.1 uM^2
+MEM Area: 8.9788e+07 uM^2
+Num of Multipliers (32-bit): 2
+Num of Registers (32-bit): 10
+===============================
+        Aladdin Results        
+===============================

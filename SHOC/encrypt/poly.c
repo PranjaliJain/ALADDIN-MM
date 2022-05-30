@@ -7,17 +7,17 @@ void free_poly(poly* x){
     free(x);
 }
 
-void print_poly(poly* x){
+void print_poly(int* x, int size){
     int first = 0;
-    for(int i= x->degree; i>0; i--){
-        if(x->coeffs[i] != 0 && !first){
-            printf("%dx^%d", x->coeffs[i], i);
+    for(int i = size-1; i>0; i--){
+        if(x[i] != 0 && !first){
+            printf("%dx^%d", x[i], i);
             first = 1;
         }
-        else if(x->coeffs[i] != 0)
-            printf(" + %dx^%d", x->coeffs[i], i);
+        else if(x[i] != 0)
+            printf(" + %dx^%d", x[i], i);
     }
-    if(x->coeffs[0] != 0) printf(" + %d", x->coeffs[0]);
+    if(x[0] != 0) printf(" + %d", x[0]);
     printf("\n");
 }
 
@@ -31,115 +31,94 @@ poly* new_poly(int degree, int* coeffs){
     return x;
 }
 
-poly* neg_poly(poly* x, int mod){
-    int* coeffs = (int*) malloc((x->degree+1)*sizeof(int));
-    for(int i=0; i<=x->degree; i++){
-        coeffs[i] = (-x->coeffs[i]) % mod;
+void neg_poly(int* x, int size, int mod){
+    for(int i=0; i<=size; i++){
+        x[i] = (-x[i]) % mod;
     }
-    return new_poly(x->degree, coeffs);
 }
 
-poly* scalar_mul(poly* x, int y, int mod){
-    int* coeffs = (int*) malloc((x->degree+1)*sizeof(int));
-    for(int i=0; i<=x->degree; i++){
-        coeffs[i] = (y * x->coeffs[i]) % mod;
+void scalar_mul(int* x, int size, int y, int mod){
+    for(int i=0; i<=size; i++){
+        x[i] = (y * x[i]) % mod;
     }
-    return new_poly(x->degree, coeffs);
 }
 
-poly* poly_divide(poly* x, double y, int mod){
-    int degree = x->degree;
-    int* coeffs = (int*) malloc((degree+1)*sizeof(int));
-    for(int i=0; i<=degree; i++){
-        double div = x->coeffs[i]/y;
-        int floor = (int) (x->coeffs[i]/y);
-        coeffs[i] = div - floor > .5 ? floor + 1 : floor;
-        coeffs[i] = coeffs[i] % mod;
+void poly_divide(int* x, int size, double y, int mod){
+    for(int i=0; i<=size; i++){
+        double div = x[i]/y;
+        int floor = (int) (x[i]/y);
+        x[i] = div - floor > .5 ? floor + 1 : floor;
+        x[i] = x[i] % mod;
     }
-    return new_poly(degree, coeffs);
 }
 
-poly* copy_poly(poly* x){
-    int* coeffs = (int*) malloc((x->degree+1)*sizeof(int));
-    for(int i=0; i<=x->degree; i++) coeffs[i] = x->coeffs[i];
-    return new_poly(x->degree, x->coeffs);
+int* copy_poly(int* x, int size){
+    int* coeffs = (int*) malloc((size)*sizeof(int));
+    for(int i=0; i<size; i++) coeffs[i] = x[i];
+    return coeffs;
 }
 
-poly* polyadd(poly* x, poly* y, int mod, poly* polymod){
+int* polyadd(int* x, int x_size, int* y, int y_size, 
+             int mod, int* polymod, int mod_size){
     //Assume x and y are legal polynomials (degree < degree(polymod))
-    assert(x->degree < polymod->degree && y->degree < polymod->degree);
-    int new_degree = polymod->degree - 1;
-    int* result_coeffs = (int*) malloc((new_degree+1)*sizeof(int));
-    int max_degree = x->degree > y->degree ? x->degree : y->degree;
-    int min_degree = x->degree > y->degree ? y->degree : x->degree;
-    poly* larger =  x->degree > y->degree ? x : y;
+    //Puts the result into the larger of the arrays
+    //Its good practice to ensure x is the larger of the two
+    assert(x_size < mod_size && y_size < mod_size);
+    int min = x_size >= y_size ? y_size : x_size;
+    int max = x_size >= y_size ? x_size : y_size;
+    int* result = x_size >= y_size ? x : y;
     int i;
-    for(i=0; i<=min_degree; i++){
-        result_coeffs[i] = (x->coeffs[i] + y->coeffs[i]) % mod;
+    for(i=0; i<=min; i++){
+        result[i] = (x[i] + y[i]) % mod;
     }
-    for(; i<=max_degree; i++){
-        result_coeffs[i] = larger->coeffs[i] % mod;
-    }
-    for(; i<=new_degree; i++){
-        result_coeffs[i] = 0;
-    }
-    poly* tmp = new_poly(new_degree, result_coeffs);
-    poly* result = polymodulo(tmp, polymod, mod);
-    free_poly(tmp);
     return result;
 }
 
-poly* polymodulo(poly* x, poly* polymod, int mod){
-    //Seems like the ex. in python buffers by another 0
-    //Don't know how that can be correct, need to figure it out
-    if(x->degree < polymod->degree){
-        return copy_poly(x);
+int* polymodulo(int* x, int x_size, int* polymod, 
+                 int mod_size, int mod){
+    if(x_size < mod_size){
+        return x;
     }
-    int* coeffs = (int*) malloc((polymod->degree)*sizeof(int));
-    int exp = polymod->degree;
+    int exp = mod_size;
     int padded_zeros = 1;
-    for(int i=polymod->degree+1; i<=x->degree; i++){
-        if(x->coeffs[i] != 0){
+    for(int i=mod_size+1; i<=x_size; i++){
+        if(x[i] != 0){
             padded_zeros = 0;
             break;
         }
     }
     if(padded_zeros){
-        for(int i=0; i<exp; i++){
-            coeffs[i] = x->coeffs[i];
-        }
-        return new_poly(exp-1, coeffs);
+        return x;
     }
-    for(int i=0; i<polymod->degree; i++){
-        coeffs[i] = x->coeffs[i];
-    }
-    for(int i=x->degree; i>=exp; i--){
+    loop_polymodulo_subt:for(int i=x_size; i>=exp; i--){
         int j = i-exp;
-        coeffs[j] = coeffs[j] - x->coeffs[i];
+        x[j] = x[j] - x[i];
+        x[i] = 0;
     }
     for(int i=0; i<=exp; i++){
-        coeffs[i] = -coeffs[i];
-        coeffs[i] = coeffs[i] > 0 ? coeffs[i] % mod : mod + coeffs[i]%mod;
+        x[i] = -x[i];
+        x[i] = x[i] > 0 ? x[i] % mod : mod + x[i]%mod;
     }
-    return new_poly(exp-1, coeffs);
+    return x;
 }
 
-poly* polymul(poly* x, poly* y, int mod, poly* polymod){
+int* polymul(int* x, int x_size, int* y, int y_size,
+             int mod, int* polymod, int mod_size){
     //Assume x and y are legal polynomials (degree < degree(polymod))
-    assert(x->degree < polymod->degree && y->degree < polymod->degree);
-    int new_degree = x->degree + y->degree;
+    assert(x_size < mod_size && y_size < mod_size);
+    int new_degree = x_size + y_size;
+    //Unfortunately I don't think I can remove this malloc
     int* result_coeffs = (int*) malloc((new_degree+1)*sizeof(int));
     for(int i=0; i<=new_degree; i++){
         result_coeffs[i] = 0;
     }
-    for(int i=0; i<=x->degree; i++){
-        for(int j=0; j<=y->degree; j++){
-            result_coeffs[i+j] += x->coeffs[i] * y->coeffs[j];
+    loop_polymul_mult_i:for(int i=0; i<=x_size; i++){
+        loop_polymul_mult_j:for(int j=0; j<=y_size; j++){
+            result_coeffs[i+j] += x[i] * y[j];
             result_coeffs[i+j] = result_coeffs[i+j] % mod;
         }
     }
-    poly* tmp = new_poly(new_degree, result_coeffs);
-    poly* result = polymodulo(tmp, polymod, mod);
-    free_poly(tmp);
+    int* result = polymodulo(result_coeffs, new_degree,
+                             polymod, mod_size, mod);
     return result;
 }

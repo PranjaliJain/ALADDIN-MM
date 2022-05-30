@@ -1,0 +1,6 @@
+Array: cipher0, size = 128, partitions = 1, word size = 8, reads = 16, writes = 0
+Array: polymod, size = 136, partitions = 2, word size = 8, reads = 0, writes = 0
+Array: call3, size = 256, partitions = 1, word size = 8, reads = 0, writes = 2
+Array: cipher1, size = 128, partitions = 1, word size = 8, reads = 16, writes = 0
+Array: call, size = 512, partitions = 1, word size = 8, reads = 122, writes = 589
+===============

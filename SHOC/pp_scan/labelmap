@@ -1,0 +1,5 @@
+last_step_scan/loop3_inner 37
+last_step_scan/loop3_outer 36
+local_scan/loop1_inner 19
+local_scan/loop1_outer 18
+sum_scan/loop2 29

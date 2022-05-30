@@ -1,9 +1,17 @@
 #include "mm.h"
+#include <time.h>
 
 #ifdef DMA_MODE
 #include "gem5/dma_interface.h"
 #endif
 
+int add(int a, int b){
+    return (a + b);
+}
+
+int mult(int a, int b){
+    return (a*b);
+}
 
 void mm(int *x, int *y, int *z){
 #ifdef DMA_MODE
@@ -11,12 +19,16 @@ void mm(int *x, int *y, int *z){
   dmaLoad(&y[0], 0, N*N*sizeof(int));
   dmaLoad(&z[0], 0, N*N*sizeof(int));
 #endif
-  int i, k, j, temp_x;
+  int i, k, j, temp_x, temp_y, temp_z, temp_mult, temp_sum;
         loopi:for ( i = 0; i < N; i++){
                 loopk:for (k = 0; k < N; k++){
-                        temp_x = x[i * N + j];
+                        temp_x = x[i * N + k];
                         loopj:for (j = 0; j < N; j++){
-                                z[i * N + j] += temp_x * y[k*N + j];
+                                temp_y = y[k * N + j];
+                                temp_z = z[i * N + j];
+                                temp_mult = mult(temp_x, temp_y);
+                                z[i * N + j] = add(temp_z, temp_mult);
+                                // z[i * N + j] += temp_x * y[k * N + j];
                         }
 
                 }
@@ -35,8 +47,11 @@ int main()
     int i, j, k;
     int max, min;
 
-        srand(8650341L);
-        max = 2147483646;
+        //srand(8650341L);
+        //max = 2147483646;
+
+	srand(time(NULL));
+	max = 10;
         min = 0;
 
 
@@ -48,9 +63,13 @@ int main()
         {
                 for(j=0;j<N ;j++)
                 {
-                        z[i * (N ) + j] = 0;
-                        x[i * (N ) + j] = rand();
-                        y[i * (N ) + j] = rand();
+                        z[i * (N) + j] = 0;
+			x[i * (N) + j] = (rand() % (max - min)) + min;
+			y[i * (N) + j] = (rand() % (max - min)) + min;
+                        //x[i * (N ) + j] = (TYPE)(((double) rand() / (RAND_MAX)) * (max - min) + min ) ;
+                        //y[i * (N ) + j] = (TYPE)(((double) rand() / (RAND_MAX)) * (max - min) + min ) ;
+			//x[i * (N) + j] = rand();
+			//y[i * (N) + j] = rand();
                 }
         }
 

@@ -1,0 +1,24 @@
+Array: y, size = 8192, partitions = 2, word size = 4, reads = 64, writes = 0
+Array: z, size = 8192, partitions = 2, word size = 4, reads = 64, writes = 64
+Array: x, size = 8192, partitions = 2, word size = 4, reads = 16, writes = 0
+===============
+Array: y, size = 8192, partitions = 2, word size = 4, reads = 64, writes = 0
+Array: z, size = 8192, partitions = 2, word size = 4, reads = 64, writes = 64
+Array: x, size = 8192, partitions = 2, word size = 4, reads = 16, writes = 0
+===============
+Array: y, size = 8192, partitions = 2, word size = 4, reads = 4096, writes = 0
+Array: z, size = 8192, partitions = 2, word size = 4, reads = 4096, writes = 4096
+Array: x, size = 8192, partitions = 2, word size = 4, reads = 256, writes = 0
+===============
+Array: y, size = 8192, partitions = 2, word size = 4, reads = 64, writes = 0
+Array: z, size = 8192, partitions = 2, word size = 4, reads = 64, writes = 64
+Array: x, size = 8192, partitions = 2, word size = 4, reads = 16, writes = 0
+===============
+Array: y, size = 8192, partitions = 2, word size = 4, reads = 64, writes = 0
+Array: z, size = 8192, partitions = 2, word size = 4, reads = 64, writes = 64
+Array: x, size = 8192, partitions = 2, word size = 4, reads = 16, writes = 0
+===============
+Array: y, size = 8192, partitions = 2, word size = 4, reads = 80, writes = 0
+Array: z, size = 8192, partitions = 2, word size = 4, reads = 68, writes = 64
+Array: x, size = 8192, partitions = 2, word size = 4, reads = 20, writes = 0
+===============

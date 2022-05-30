@@ -1,0 +1,10 @@
+hist/loop1 67
+hist/loop2 65
+init/loop1_outer 56
+last_step_scan/loop3_inner 44
+last_step_scan/loop3_outer 42
+local_scan/loop1_inner 23
+local_scan/loop1_outer 21
+sum_scan/loop2 34
+update/loop1 81
+update/loop3 79

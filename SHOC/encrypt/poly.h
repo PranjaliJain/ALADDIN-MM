@@ -13,22 +13,25 @@ typedef struct poly{
 
 void free_poly(poly* x);
 
-void print_poly(poly* x);
+void print_poly(int* x, int size);
 
 poly* new_poly(int degree, int* coeffs);
 
-poly* copy_poly(poly* x);
+int* copy_poly(int* x, int size);
 
-poly* neg_poly(poly* x, int mod);
+void neg_poly(int* x, int size, int mod);
 
-poly* scalar_mul(poly* x, int y, int mod);
+void scalar_mul(int* x, int size, int y, int mod);
 
-poly* poly_divide(poly* x, double y, int mod);
+void poly_divide(int* x, int size, double y, int mod);
 
-poly* polyadd(poly* x, poly* y, int mod, poly* polymod);
+int* polyadd(int* x, int x_size, int* y, int y_size, 
+             int mod, int* polymod, int mod_size);
 
-poly* polymodulo(poly* x, poly* polymod, int mod);
+int* polymodulo(int* x, int x_size, int* polymod, 
+                 int mod_size, int mod);
 
-poly* polymul(poly* x, poly* y, int mod, poly* polymod);
+int* polymul(int* x, int x_size, int* y, int y_size,
+             int mod, int* polymod, int mod_size);
 
 #endif

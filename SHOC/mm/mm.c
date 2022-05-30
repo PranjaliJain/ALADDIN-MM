@@ -1,5 +1,4 @@
 #include "mm.h"
-#include <time.h>
 
 #ifdef DMA_MODE
 #include "gem5/dma_interface.h"
@@ -13,7 +12,7 @@ int mult(int a, int b){
     return (a*b);
 }
 
-void mm(int *x, int *y, int *z){
+void mm(int **x, int **y, int **z){
 #ifdef DMA_MODE
   dmaLoad(&x[0], 0, N*N*sizeof(int));
   dmaLoad(&y[0], 0, N*N*sizeof(int));
@@ -22,12 +21,12 @@ void mm(int *x, int *y, int *z){
   int i, k, j, temp_x, temp_y, temp_z, temp_mult, temp_sum;
         loopi:for ( i = 0; i < N; i++){
                 loopk:for (k = 0; k < N; k++){
-                        temp_x = x[i * N + k];
+                        temp_x = x[i][k];
                         loopj:for (j = 0; j < N; j++){
-                                temp_y = y[k * N + j];
-                                temp_z = z[i * N + j];
+                                temp_y = y[k][j];
+                                temp_z = z[i][j];
                                 temp_mult = mult(temp_x, temp_y);
-                                z[i * N + j] = add(temp_z, temp_mult);
+                                z[i][j] = add(temp_z, temp_mult);
                                 // z[i * N + j] += temp_x * y[k * N + j];
                         }
 
@@ -41,35 +40,37 @@ void mm(int *x, int *y, int *z){
 int main()
 {
 
-        int  *x;
-        int *y;
-        int *z;
+        int  **x;
+        int **y;
+        int **z;
     int i, j, k;
     int max, min;
 
         //srand(8650341L);
         //max = 2147483646;
-
-        srand(time(NULL));
+        //min = 0;
+	srand(time(NULL));
         max = 10;
         min = 0;
 
 
-  x = (int *)malloc(sizeof(int) * N * N);
-  y = (int *)malloc(sizeof(int) * N * N);
-  z = (int *) malloc(sizeof(int) * N * N);
+  x = (int **)malloc(sizeof(int*) * N);
+  y = (int **)malloc(sizeof(int*) * N);
+  z = (int **) malloc(sizeof(int*) * N);
+
+  for(i=0; i<N; i++){
+        x[i] = (int*) malloc(sizeof(int)*N);
+        y[i] = (int*) malloc(sizeof(int)*N);
+        z[i] = (int*) malloc(sizeof(int)*N);
+  }
 
         for(i=0;i<N ;i++)
         {
                 for(j=0;j<N ;j++)
                 {
-                        z[i * (N) + j] = 0;
-                        x[i * (N) + j] = (rand() % (max - min)) + min;
-                        y[i * (N) + j] = (rand() % (max - min)) + min;
-                        //x[i * (N ) + j] = (TYPE)(((double) rand() / (RAND_MAX)) * (max - min) + min ) ;
-                        //y[i * (N ) + j] = (TYPE)(((double) rand() / (RAND_MAX)) * (max - min) + min ) ;
-                        //x[i * (N) + j] = rand();
-                        //y[i * (N) + j] = rand();
+                        z[i][j] = 0;
+                        x[i][j] = (rand() % (max - min)) + min;
+                        y[i][j] = (rand() % (max - min)) + min;
                 }
         }
 
@@ -78,7 +79,7 @@ int main()
 #ifdef GEM5
   resetGem5Stats();
 #endif
-        mm(&x[0], &y[0], &z[0]);
+        mm(x, y, z);
 #ifdef GEM5
   dumpGem5Stats("mm");
 #endif
@@ -87,7 +88,7 @@ int main()
                 {
                         for(j=0;j<N;j++)
                         {
-                                printf("%d, %d, %d\n ", i, j, z[i*(N ) + j]);
+                                printf("%d, %d, %d\n ", i, j, z[i][j]);
                         }
                 }
         printf("Success!!\n");

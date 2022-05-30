@@ -16,7 +16,7 @@ EXEC = $(ACCEL_NAME)
 trace-binary: $(EXEC)-instrumented labelmap
 
 dma-trace-binary:
-	$(MAKE) -C . DMA_MODE=1 trace-binary
+	$(MAKE) -C . DMA_MODE=0 trace-binary
 
 run-trace: trace-binary
 	./$(EXEC)-instrumented
@@ -61,7 +61,7 @@ full.s: full.llvm
 	llc -O0 -disable-fp-elim -filetype=asm -o $@ $<
 
 $(EXEC)-instrumented: full.s
-	$(CXX) -no-pie -O0 -fno-inline -o $@ $< -lm -lz -lpthread
+	$(CXX) -O0 -fno-inline -o $@ $< -lm -lz -lpthread
 
 %-opt.llvm: %.c labelmap
 	@$(eval CC1_COMMAND=$(shell clang -static -g -O1 -S -fno-slp-vectorize \

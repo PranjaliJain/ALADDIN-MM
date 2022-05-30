@@ -1,0 +1,32 @@
+Array: b, size = 8192, partitions = 2, word size = 4, reads = 2048, writes = 0
+Array: c, size = 8192, partitions = 2, word size = 4, reads = 0, writes = 2048
+Array: a, size = 8192, partitions = 2, word size = 4, reads = 2048, writes = 0
+===============
+Array: b, size = 8192, partitions = 2, word size = 4, reads = 2048, writes = 0
+Array: c, size = 8192, partitions = 2, word size = 4, reads = 0, writes = 2048
+Array: a, size = 8192, partitions = 2, word size = 4, reads = 2048, writes = 0
+===============
+Array: b, size = 8192, partitions = 2, word size = 4, reads = 2048, writes = 0
+Array: c, size = 8192, partitions = 2, word size = 4, reads = 0, writes = 2048
+Array: a, size = 8192, partitions = 2, word size = 4, reads = 2048, writes = 0
+===============
+Array: b, size = 8192, partitions = 2, word size = 4, reads = 2048, writes = 0
+Array: c, size = 8192, partitions = 2, word size = 4, reads = 0, writes = 2048
+Array: a, size = 8192, partitions = 2, word size = 4, reads = 2048, writes = 0
+===============
+Array: b, size = 8192, partitions = 2, word size = 4, reads = 2048, writes = 0
+Array: c, size = 8192, partitions = 2, word size = 4, reads = 0, writes = 2048
+Array: a, size = 8192, partitions = 2, word size = 4, reads = 2048, writes = 0
+===============
+Array: b, size = 8192, partitions = 2, word size = 4, reads = 2048, writes = 0
+Array: c, size = 8192, partitions = 2, word size = 4, reads = 0, writes = 2048
+Array: a, size = 8192, partitions = 2, word size = 4, reads = 2048, writes = 0
+===============
+Array: b, size = 8192, partitions = 2, word size = 4, reads = 2048, writes = 0
+Array: c, size = 8192, partitions = 2, word size = 4, reads = 0, writes = 2048
+Array: a, size = 8192, partitions = 2, word size = 4, reads = 2048, writes = 0
+===============
+Array: b, size = 8192, partitions = 2, word size = 4, reads = 2048, writes = 0
+Array: c, size = 8192, partitions = 2, word size = 4, reads = 0, writes = 2048
+Array: a, size = 8192, partitions = 2, word size = 4, reads = 2048, writes = 0
+===============

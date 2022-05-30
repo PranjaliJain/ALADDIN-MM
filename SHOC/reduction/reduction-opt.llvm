@@ -1,0 +1,356 @@
+; ModuleID = 'reduction.llvm'
+source_filename = "reduction.c"
+target datalayout = "e-m:e-i64:64-f80:128-n8:16:32:64-S128"
+target triple = "x86_64-unknown-linux-gnu"
+
+@.str = private unnamed_addr constant [9 x i8] c"sum: %d\0A\00", align 1
+@.str.1 = private constant [10 x i8] c"reduction\00"
+@.str.2 = private constant [4 x i8] c"0:0\00"
+@.str.3 = private constant [6 x i8] c"0:0-4\00"
+@.str.4 = private constant [4 x i8] c"1:1\00"
+@.str.5 = private constant [4 x i8] c"phi\00"
+@.str.6 = private constant [11 x i8] c"indvars.iv\00"
+@.str.7 = private constant [16 x i8] c"indvars.iv.next\00"
+@.str.8 = private constant [1 x i8] zeroinitializer
+@.str.9 = private constant [7 x i8] c"sum.07\00"
+@.str.10 = private constant [4 x i8] c"add\00"
+@.str.11 = private constant [2 x i8] c"i\00"
+@.str.12 = private constant [9 x i8] c"arrayidx\00"
+@.str.13 = private constant [3 x i8] c"in\00"
+@.str.14 = private constant [2 x i8] c"2\00"
+@.str.15 = private constant [9 x i8] c"exitcond\00"
+@.str.16 = private constant [6 x i8] c"1:1-3\00"
+@.str.17 = private constant [4 x i8] c"3:0\00"
+@.str.18 = private constant [6 x i8] c"3:0-0\00"
+@.str.19 = private constant [5 x i8] c"main\00"
+@.str.20 = private constant [5 x i8] c"call\00"
+@.str.21 = private constant [7 x i8] c"malloc\00"
+@.str.22 = private constant [2 x i8] c"1\00"
+@.str.23 = private constant [6 x i8] c"0:0-3\00"
+@.str.24 = private constant [6 x i8] c"srand\00"
+@.str.25 = private constant [6 x i8] c"0:0-5\00"
+@.str.26 = private constant [4 x i8] c"2:1\00"
+@.str.27 = private constant [6 x i8] c"call1\00"
+@.str.28 = private constant [5 x i8] c"rand\00"
+@.str.29 = private constant [6 x i8] c"conv2\00"
+@.str.30 = private constant [5 x i8] c"mul4\00"
+@.str.31 = private constant [4 x i8] c"div\00"
+@.str.32 = private constant [6 x i8] c"conv5\00"
+@.str.33 = private constant [6 x i8] c"2:1-1\00"
+@.str.34 = private constant [6 x i8] c"2:1-2\00"
+@.str.35 = private constant [6 x i8] c"call7\00"
+@.str.36 = private constant [6 x i8] c"call8\00"
+@.str.37 = private constant [7 x i8] c"printf\00"
+@.str.38 = private constant [9 x i8] c"sum: %d\0A\00"
+@.str.39 = private constant [6 x i8] c"3:0-1\00"
+@.str.40 = private constant [4 x i8] c"min\00"
+@.str.41 = private constant [18 x i8] c"reduction/sum 13\0A\00"
+
+; Function Attrs: noinline nounwind readonly uwtable
+define i32 @reduction(i32* nocapture readonly %in) local_unnamed_addr #0 !dbg !10 {
+  call void @trace_logger_update_status(i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.1, i32 0, i32 0), i64 0, i1 true, i1 true), !dbg !17
+  call void @trace_logger_log_entry(i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.1, i32 0, i32 0), i64 1), !dbg !17
+  %1 = ptrtoint i32* %in to i64, !dbg !17
+  call void @trace_logger_log_ptr(i64 1, i64 64, i64 %1, i64 1, i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.13, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !17
+  call void @llvm.dbg.value(metadata i32* %in, metadata !14, metadata !DIExpression()), !dbg !17
+  call void @llvm.dbg.value(metadata i32 0, metadata !15, metadata !DIExpression()), !dbg !18
+  call void @llvm.dbg.value(metadata i32 0, metadata !16, metadata !DIExpression()), !dbg !19
+  call void @llvm.dbg.value(metadata i32 0, metadata !15, metadata !DIExpression()), !dbg !18
+  call void @trace_logger_log0(i64 13, i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.1, i32 0, i32 0), i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.2, i32 0, i32 0), i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.3, i32 0, i32 0), i64 2, i1 true, i1 true), !dbg !20
+  call void @trace_logger_log_int(i64 1, i64 0, i64 0, i64 1, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.4, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !20
+  br label %2, !dbg !20
+
+; <label>:2:                                      ; preds = %2, %0
+  %indvars.iv = phi i64 [ 0, %0 ], [ %indvars.iv.next, %2 ]
+  %sum.07 = phi i32 [ 0, %0 ], [ %add, %2 ]
+  call void @trace_logger_log0(i64 -1, i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.1, i32 0, i32 0), i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.4, i32 0, i32 0), i8* getelementptr inbounds ([11 x i8], [11 x i8]* @.str.6, i32 0, i32 0), i64 53, i1 true, i1 true), !dbg !18
+  call void @trace_logger_log_int(i64 2, i64 64, i64 0, i64 1, i8* getelementptr inbounds ([16 x i8], [16 x i8]* @.str.7, i32 0, i32 0), i64 1, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.4, i32 0, i32 0)), !dbg !18
+  call void @trace_logger_log_int(i64 1, i64 64, i64 0, i64 0, i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.8, i32 0, i32 0), i64 1, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.2, i32 0, i32 0)), !dbg !18
+  call void @trace_logger_log_int(i64 19134, i64 64, i64 %indvars.iv, i64 1, i8* getelementptr inbounds ([11 x i8], [11 x i8]* @.str.6, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.2, i32 0, i32 0)), !dbg !18
+  call void @trace_logger_log0(i64 -1, i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.1, i32 0, i32 0), i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.4, i32 0, i32 0), i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.9, i32 0, i32 0), i64 53, i1 true, i1 true), !dbg !18
+  call void @trace_logger_log_int(i64 2, i64 32, i64 0, i64 1, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.10, i32 0, i32 0), i64 1, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.4, i32 0, i32 0)), !dbg !18
+  call void @trace_logger_log_int(i64 1, i64 32, i64 0, i64 1, i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.11, i32 0, i32 0), i64 1, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.2, i32 0, i32 0)), !dbg !18
+  %3 = zext i32 %sum.07 to i64, !dbg !18
+  call void @trace_logger_log_int(i64 19134, i64 32, i64 %3, i64 1, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.9, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.2, i32 0, i32 0)), !dbg !18
+  call void @llvm.dbg.value(metadata i64 %indvars.iv, metadata !15, metadata !DIExpression()), !dbg !18
+  call void @llvm.dbg.value(metadata i32 %sum.07, metadata !16, metadata !DIExpression()), !dbg !19
+  call void @trace_logger_log0(i64 14, i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.1, i32 0, i32 0), i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.4, i32 0, i32 0), i8* getelementptr inbounds ([9 x i8], [9 x i8]* @.str.12, i32 0, i32 0), i64 32, i1 true, i1 true), !dbg !22
+  call void @trace_logger_log_int(i64 2, i64 64, i64 %indvars.iv, i64 1, i8* getelementptr inbounds ([11 x i8], [11 x i8]* @.str.6, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !22
+  %4 = ptrtoint i32* %in to i64, !dbg !22
+  call void @trace_logger_log_ptr(i64 1, i64 64, i64 %4, i64 1, i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str.13, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !22
+  %arrayidx = getelementptr inbounds i32, i32* %in, i64 %indvars.iv, !dbg !22
+  %5 = ptrtoint i32* %arrayidx to i64, !dbg !22
+  call void @trace_logger_log_ptr(i64 19134, i64 64, i64 %5, i64 1, i8* getelementptr inbounds ([9 x i8], [9 x i8]* @.str.12, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !22
+  call void @trace_logger_log0(i64 14, i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.1, i32 0, i32 0), i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.4, i32 0, i32 0), i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.14, i32 0, i32 0), i64 30, i1 true, i1 true), !dbg !22
+  %6 = ptrtoint i32* %arrayidx to i64, !dbg !22
+  call void @trace_logger_log_ptr(i64 1, i64 64, i64 %6, i64 1, i8* getelementptr inbounds ([9 x i8], [9 x i8]* @.str.12, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !22
+  %7 = load i32, i32* %arrayidx, align 4, !dbg !22, !tbaa !24
+  %8 = zext i32 %7 to i64, !dbg !28
+  call void @trace_logger_log_int(i64 19134, i64 32, i64 %8, i64 1, i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.14, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !28
+  call void @trace_logger_log0(i64 14, i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.1, i32 0, i32 0), i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.4, i32 0, i32 0), i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.10, i32 0, i32 0), i64 11, i1 true, i1 true), !dbg !28
+  %9 = zext i32 %sum.07 to i64, !dbg !28
+  call void @trace_logger_log_int(i64 2, i64 32, i64 %9, i64 1, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.9, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !28
+  %10 = zext i32 %7 to i64, !dbg !28
+  call void @trace_logger_log_int(i64 1, i64 32, i64 %10, i64 1, i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.14, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !28
+  %add = add nsw i32 %7, %sum.07, !dbg !28
+  %11 = zext i32 %add to i64, !dbg !29
+  call void @trace_logger_log_int(i64 19134, i64 32, i64 %11, i64 1, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.10, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !29
+  call void @trace_logger_log0(i64 13, i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.1, i32 0, i32 0), i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.4, i32 0, i32 0), i8* getelementptr inbounds ([16 x i8], [16 x i8]* @.str.7, i32 0, i32 0), i64 11, i1 true, i1 true), !dbg !29
+  call void @trace_logger_log_int(i64 2, i64 64, i64 1, i64 0, i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.8, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !29
+  call void @trace_logger_log_int(i64 1, i64 64, i64 %indvars.iv, i64 1, i8* getelementptr inbounds ([11 x i8], [11 x i8]* @.str.6, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !29
+  %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1, !dbg !29
+  call void @trace_logger_log_int(i64 19134, i64 64, i64 %indvars.iv.next, i64 1, i8* getelementptr inbounds ([16 x i8], [16 x i8]* @.str.7, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !19
+  call void @llvm.dbg.value(metadata i32 %add, metadata !16, metadata !DIExpression()), !dbg !19
+  call void @trace_logger_log0(i64 13, i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.1, i32 0, i32 0), i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.4, i32 0, i32 0), i8* getelementptr inbounds ([9 x i8], [9 x i8]* @.str.15, i32 0, i32 0), i64 51, i1 true, i1 true), !dbg !30
+  call void @trace_logger_log_int(i64 2, i64 64, i64 2048, i64 0, i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.8, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !30
+  call void @trace_logger_log_int(i64 1, i64 64, i64 %indvars.iv.next, i64 1, i8* getelementptr inbounds ([16 x i8], [16 x i8]* @.str.7, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !30
+  %exitcond = icmp eq i64 %indvars.iv.next, 2048, !dbg !30
+  %12 = zext i1 %exitcond to i64, !dbg !20
+  call void @trace_logger_log_int(i64 19134, i64 1, i64 %12, i64 1, i8* getelementptr inbounds ([9 x i8], [9 x i8]* @.str.15, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !20
+  call void @trace_logger_log0(i64 13, i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.1, i32 0, i32 0), i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.4, i32 0, i32 0), i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.16, i32 0, i32 0), i64 2, i1 true, i1 true), !dbg !20
+  call void @trace_logger_log_int(i64 3, i64 0, i64 0, i64 1, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.17, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !20
+  call void @trace_logger_log_int(i64 2, i64 0, i64 0, i64 1, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.4, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !20
+  %13 = zext i1 %exitcond to i64, !dbg !20
+  call void @trace_logger_log_int(i64 1, i64 1, i64 %13, i64 1, i8* getelementptr inbounds ([9 x i8], [9 x i8]* @.str.15, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !20
+  br i1 %exitcond, label %14, label %2, !dbg !20, !llvm.loop !31
+
+; <label>:14:                                     ; preds = %2
+  call void @trace_logger_log0(i64 16, i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.1, i32 0, i32 0), i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.17, i32 0, i32 0), i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.18, i32 0, i32 0), i64 1, i1 true, i1 true), !dbg !33
+  %15 = zext i32 %add to i64, !dbg !33
+  call void @trace_logger_log_int(i64 1, i64 32, i64 %15, i64 1, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.10, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !33
+  call void @trace_logger_update_status(i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.1, i32 0, i32 0), i64 1, i1 true, i1 true), !dbg !33
+  ret i32 %add, !dbg !33
+}
+
+; Function Attrs: noinline nounwind uwtable
+define i32 @main() local_unnamed_addr #1 !dbg !34 {
+  call void @trace_logger_init(), !dbg !43
+  call void @trace_logger_register_labelmap(i8* getelementptr inbounds ([18 x i8], [18 x i8]* @.str.41, i32 0, i32 0), i64 17), !dbg !43
+  call void @trace_logger_log0(i64 23, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.19, i32 0, i32 0), i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.2, i32 0, i32 0), i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.20, i32 0, i32 0), i64 54, i1 false, i1 true), !dbg !43
+  call void @trace_logger_log_ptr(i64 2, i64 64, i64 ptrtoint (i8* (i64)* @malloc to i64), i64 1, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.21, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !43
+  call void @trace_logger_log_int(i64 1, i64 64, i64 8192, i64 0, i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.8, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !43
+  %call = tail call noalias i8* @malloc(i64 8192) #5, !dbg !43
+  %1 = ptrtoint i8* %call to i64, !dbg !44
+  call void @trace_logger_log_ptr(i64 19134, i64 64, i64 %1, i64 1, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.20, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !44
+  call void @trace_logger_log0(i64 23, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.19, i32 0, i32 0), i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.2, i32 0, i32 0), i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.22, i32 0, i32 0), i64 47, i1 false, i1 true), !dbg !44
+  %2 = ptrtoint i8* %call to i64, !dbg !44
+  call void @trace_logger_log_ptr(i64 1, i64 64, i64 %2, i64 1, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.20, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !44
+  %3 = bitcast i8* %call to i32*, !dbg !44
+  %4 = ptrtoint i32* %3 to i64, !dbg !45
+  call void @trace_logger_log_ptr(i64 19134, i64 64, i64 %4, i64 1, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.20, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !45
+  call void @llvm.dbg.value(metadata i32* %3, metadata !38, metadata !DIExpression()), !dbg !45
+  call void @llvm.dbg.value(metadata i32 2147483646, metadata !40, metadata !DIExpression()), !dbg !46
+  call void @llvm.dbg.value(metadata i32 0, metadata !41, metadata !DIExpression()), !dbg !47
+  call void @trace_logger_log0(i64 28, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.19, i32 0, i32 0), i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.2, i32 0, i32 0), i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.23, i32 0, i32 0), i64 54, i1 false, i1 true), !dbg !48
+  call void @trace_logger_log_ptr(i64 2, i64 64, i64 ptrtoint (void (i32)* @srand to i64), i64 1, i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.24, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !48
+  call void @trace_logger_log_int(i64 1, i64 32, i64 8650341, i64 0, i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.8, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !48
+  tail call void @srand(i32 8650341) #5, !dbg !48
+  call void @llvm.dbg.value(metadata i32 0, metadata !39, metadata !DIExpression()), !dbg !49
+  call void @trace_logger_log0(i64 29, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.19, i32 0, i32 0), i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.2, i32 0, i32 0), i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.25, i32 0, i32 0), i64 2, i1 false, i1 true), !dbg !50
+  call void @trace_logger_log_int(i64 1, i64 0, i64 0, i64 1, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.26, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !50
+  br label %5, !dbg !50
+
+; <label>:5:                                      ; preds = %5, %0
+  %indvars.iv = phi i64 [ 0, %0 ], [ %indvars.iv.next, %5 ]
+  call void @trace_logger_log0(i64 -1, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.19, i32 0, i32 0), i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.26, i32 0, i32 0), i8* getelementptr inbounds ([11 x i8], [11 x i8]* @.str.6, i32 0, i32 0), i64 53, i1 false, i1 true), !dbg !49
+  call void @trace_logger_log_int(i64 2, i64 64, i64 0, i64 1, i8* getelementptr inbounds ([16 x i8], [16 x i8]* @.str.7, i32 0, i32 0), i64 1, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.26, i32 0, i32 0)), !dbg !49
+  call void @trace_logger_log_int(i64 1, i64 64, i64 0, i64 0, i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.8, i32 0, i32 0), i64 1, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.2, i32 0, i32 0)), !dbg !49
+  call void @trace_logger_log_int(i64 19134, i64 64, i64 %indvars.iv, i64 1, i8* getelementptr inbounds ([11 x i8], [11 x i8]* @.str.6, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.2, i32 0, i32 0)), !dbg !49
+  call void @llvm.dbg.value(metadata i64 %indvars.iv, metadata !39, metadata !DIExpression()), !dbg !49
+  call void @trace_logger_log0(i64 31, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.19, i32 0, i32 0), i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.26, i32 0, i32 0), i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.27, i32 0, i32 0), i64 54, i1 false, i1 true), !dbg !52
+  call void @trace_logger_log_ptr(i64 1, i64 64, i64 ptrtoint (i32 ()* @rand to i64), i64 1, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.28, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !52
+  %call1 = tail call i32 @rand() #5, !dbg !52
+  %6 = zext i32 %call1 to i64, !dbg !52
+  call void @trace_logger_log_int(i64 19134, i64 32, i64 %6, i64 1, i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.27, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !52
+  call void @trace_logger_log0(i64 31, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.19, i32 0, i32 0), i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.26, i32 0, i32 0), i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.29, i32 0, i32 0), i64 42, i1 false, i1 true), !dbg !52
+  %7 = zext i32 %call1 to i64, !dbg !52
+  call void @trace_logger_log_int(i64 1, i64 32, i64 %7, i64 1, i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.27, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !52
+  %conv2 = sitofp i32 %call1 to double, !dbg !52
+  call void @trace_logger_log_double(i64 19134, i64 64, double %conv2, i64 1, i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.29, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !55
+  call void @trace_logger_log0(i64 31, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.19, i32 0, i32 0), i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.26, i32 0, i32 0), i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.30, i32 0, i32 0), i64 16, i1 false, i1 true), !dbg !55
+  call void @trace_logger_log_double(i64 2, i64 64, double 0x41DFFFFFFF800000, i64 0, i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.8, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !55
+  call void @trace_logger_log_double(i64 1, i64 64, double %conv2, i64 1, i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.29, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !55
+  %mul4 = fmul double %conv2, 0x41DFFFFFFF800000, !dbg !55
+  call void @trace_logger_log_double(i64 19134, i64 64, double %mul4, i64 1, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.30, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !56
+  call void @trace_logger_log0(i64 31, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.19, i32 0, i32 0), i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.26, i32 0, i32 0), i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.31, i32 0, i32 0), i64 19, i1 false, i1 true), !dbg !56
+  call void @trace_logger_log_double(i64 2, i64 64, double 0x41DFFFFFFFC00000, i64 0, i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.8, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !56
+  call void @trace_logger_log_double(i64 1, i64 64, double %mul4, i64 1, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.30, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !56
+  %div = fdiv double %mul4, 0x41DFFFFFFFC00000, !dbg !56
+  call void @trace_logger_log_double(i64 19134, i64 64, double %div, i64 1, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.31, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !57
+  call void @trace_logger_log0(i64 31, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.19, i32 0, i32 0), i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.26, i32 0, i32 0), i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.10, i32 0, i32 0), i64 12, i1 false, i1 true), !dbg !57
+  call void @trace_logger_log_double(i64 2, i64 64, double 0.000000e+00, i64 0, i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.8, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !57
+  call void @trace_logger_log_double(i64 1, i64 64, double %div, i64 1, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.31, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !57
+  %add = fadd double %div, 0.000000e+00, !dbg !57
+  call void @trace_logger_log_double(i64 19134, i64 64, double %add, i64 1, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.10, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !58
+  call void @trace_logger_log0(i64 31, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.19, i32 0, i32 0), i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.26, i32 0, i32 0), i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.32, i32 0, i32 0), i64 40, i1 false, i1 true), !dbg !58
+  call void @trace_logger_log_double(i64 1, i64 64, double %add, i64 1, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.10, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !58
+  %conv5 = fptosi double %add to i32, !dbg !58
+  %8 = zext i32 %conv5 to i64, !dbg !59
+  call void @trace_logger_log_int(i64 19134, i64 32, i64 %8, i64 1, i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.32, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !59
+  call void @trace_logger_log0(i64 31, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.19, i32 0, i32 0), i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.26, i32 0, i32 0), i8* getelementptr inbounds ([9 x i8], [9 x i8]* @.str.12, i32 0, i32 0), i64 32, i1 false, i1 true), !dbg !59
+  call void @trace_logger_log_int(i64 2, i64 64, i64 %indvars.iv, i64 1, i8* getelementptr inbounds ([11 x i8], [11 x i8]* @.str.6, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !59
+  %9 = ptrtoint i32* %3 to i64, !dbg !59
+  call void @trace_logger_log_ptr(i64 1, i64 64, i64 %9, i64 1, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.20, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !59
+  %arrayidx = getelementptr inbounds i32, i32* %3, i64 %indvars.iv, !dbg !59
+  %10 = ptrtoint i32* %arrayidx to i64, !dbg !60
+  call void @trace_logger_log_ptr(i64 19134, i64 64, i64 %10, i64 1, i8* getelementptr inbounds ([9 x i8], [9 x i8]* @.str.12, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !60
+  call void @trace_logger_log0(i64 31, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.19, i32 0, i32 0), i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.26, i32 0, i32 0), i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.33, i32 0, i32 0), i64 31, i1 false, i1 true), !dbg !60
+  %11 = ptrtoint i32* %arrayidx to i64, !dbg !60
+  call void @trace_logger_log_ptr(i64 2, i64 64, i64 %11, i64 1, i8* getelementptr inbounds ([9 x i8], [9 x i8]* @.str.12, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !60
+  %12 = zext i32 %conv5 to i64, !dbg !60
+  call void @trace_logger_log_int(i64 1, i64 32, i64 %12, i64 1, i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.32, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !60
+  store i32 %conv5, i32* %arrayidx, align 4, !dbg !60, !tbaa !24
+  call void @trace_logger_log0(i64 29, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.19, i32 0, i32 0), i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.26, i32 0, i32 0), i8* getelementptr inbounds ([16 x i8], [16 x i8]* @.str.7, i32 0, i32 0), i64 11, i1 false, i1 true), !dbg !61
+  call void @trace_logger_log_int(i64 2, i64 64, i64 1, i64 0, i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.8, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !61
+  call void @trace_logger_log_int(i64 1, i64 64, i64 %indvars.iv, i64 1, i8* getelementptr inbounds ([11 x i8], [11 x i8]* @.str.6, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !61
+  %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1, !dbg !61
+  call void @trace_logger_log_int(i64 19134, i64 64, i64 %indvars.iv.next, i64 1, i8* getelementptr inbounds ([16 x i8], [16 x i8]* @.str.7, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !62
+  call void @trace_logger_log0(i64 29, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.19, i32 0, i32 0), i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.26, i32 0, i32 0), i8* getelementptr inbounds ([9 x i8], [9 x i8]* @.str.15, i32 0, i32 0), i64 51, i1 false, i1 true), !dbg !62
+  call void @trace_logger_log_int(i64 2, i64 64, i64 2048, i64 0, i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.8, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !62
+  call void @trace_logger_log_int(i64 1, i64 64, i64 %indvars.iv.next, i64 1, i8* getelementptr inbounds ([16 x i8], [16 x i8]* @.str.7, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !62
+  %exitcond = icmp eq i64 %indvars.iv.next, 2048, !dbg !62
+  %13 = zext i1 %exitcond to i64, !dbg !50
+  call void @trace_logger_log_int(i64 19134, i64 1, i64 %13, i64 1, i8* getelementptr inbounds ([9 x i8], [9 x i8]* @.str.15, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !50
+  call void @trace_logger_log0(i64 29, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.19, i32 0, i32 0), i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.26, i32 0, i32 0), i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.34, i32 0, i32 0), i64 2, i1 false, i1 true), !dbg !50
+  call void @trace_logger_log_int(i64 3, i64 0, i64 0, i64 1, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.17, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !50
+  call void @trace_logger_log_int(i64 2, i64 0, i64 0, i64 1, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.26, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !50
+  %14 = zext i1 %exitcond to i64, !dbg !50
+  call void @trace_logger_log_int(i64 1, i64 1, i64 %14, i64 1, i8* getelementptr inbounds ([9 x i8], [9 x i8]* @.str.15, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !50
+  br i1 %exitcond, label %15, label %5, !dbg !50, !llvm.loop !63
+
+; <label>:15:                                     ; preds = %5
+  call void @trace_logger_log0(i64 37, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.19, i32 0, i32 0), i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.17, i32 0, i32 0), i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.35, i32 0, i32 0), i64 54, i1 false, i1 true), !dbg !65
+  call void @trace_logger_log_ptr(i64 2, i64 64, i64 ptrtoint (i32 (i32*)* @reduction to i64), i64 1, i8* getelementptr inbounds ([10 x i8], [10 x i8]* @.str.1, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !65
+  %16 = ptrtoint i32* %3 to i64, !dbg !65
+  call void @trace_logger_log_ptr(i64 1, i64 64, i64 %16, i64 1, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.20, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !65
+  %call7 = tail call i32 @reduction(i32* nonnull %3) #6, !dbg !65
+  %17 = zext i32 %call7 to i64, !dbg !66
+  call void @trace_logger_log_int(i64 19134, i64 32, i64 %17, i64 1, i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.35, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !66
+  call void @llvm.dbg.value(metadata i32 %call7, metadata !42, metadata !DIExpression()), !dbg !66
+  call void @trace_logger_log0(i64 41, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.19, i32 0, i32 0), i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.17, i32 0, i32 0), i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.36, i32 0, i32 0), i64 54, i1 false, i1 true), !dbg !67
+  call void @trace_logger_log_ptr(i64 3, i64 64, i64 ptrtoint (i32 (i8*, ...)* @printf to i64), i64 1, i8* getelementptr inbounds ([7 x i8], [7 x i8]* @.str.37, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !67
+  call void @trace_logger_log_string(i64 1, i64 64, i8* getelementptr inbounds ([9 x i8], [9 x i8]* @.str.38, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([1 x i8], [1 x i8]* @.str.8, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !67
+  %call8 = tail call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([9 x i8], [9 x i8]* @.str, i64 0, i64 0), i32 %call7) #5, !dbg !67
+  %18 = zext i32 %call8 to i64, !dbg !68
+  call void @trace_logger_log_int(i64 19134, i64 32, i64 %18, i64 1, i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.36, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !68
+  call void @trace_logger_log0(i64 42, i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.19, i32 0, i32 0), i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.17, i32 0, i32 0), i8* getelementptr inbounds ([6 x i8], [6 x i8]* @.str.39, i32 0, i32 0), i64 1, i1 false, i1 true), !dbg !68
+  call void @trace_logger_log_int(i64 1, i64 32, i64 0, i64 1, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.40, i32 0, i32 0), i64 0, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.5, i32 0, i32 0)), !dbg !68
+  call void @trace_logger_update_status(i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str.19, i32 0, i32 0), i64 1, i1 false, i1 true), !dbg !68
+  ret i32 0, !dbg !68
+}
+
+; Function Attrs: nounwind
+declare noalias i8* @malloc(i64) local_unnamed_addr #2
+
+; Function Attrs: nounwind
+declare void @srand(i32) local_unnamed_addr #2
+
+; Function Attrs: nounwind
+declare i32 @rand() local_unnamed_addr #2
+
+declare i32 @printf(i8*, ...) local_unnamed_addr #3
+
+; Function Attrs: nounwind readnone speculatable
+declare void @llvm.dbg.value(metadata, metadata, metadata) #4
+
+declare void @trace_logger_log_entry(i8*, i64)
+
+declare void @trace_logger_log0(i64, i8*, i8*, i8*, i64, i1, i1)
+
+declare void @trace_logger_log_int(i64, i64, i64, i64, i8*, i64, i8*)
+
+declare void @trace_logger_log_ptr(i64, i64, i64, i64, i8*, i64, i8*)
+
+declare void @trace_logger_log_string(i64, i64, i8*, i64, i8*, i64, i8*)
+
+declare void @trace_logger_log_double(i64, i64, double, i64, i8*, i64, i8*)
+
+declare void @trace_logger_log_vector(i64, i64, i8*, i64, i8*, i64, i8*)
+
+declare void @trace_logger_update_status(i8*, i64, i1, i1)
+
+declare void @trace_logger_init()
+
+declare void @trace_logger_register_labelmap(i8*, i64)
+
+attributes #0 = { noinline nounwind readonly uwtable "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="false" "no-infs-fp-math"="false" "no-jump-tables"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+fxsr,+mmx,+sse,+sse2,+x87" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #1 = { noinline nounwind uwtable "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="false" "no-infs-fp-math"="false" "no-jump-tables"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+fxsr,+mmx,+sse,+sse2,+x87" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #2 = { nounwind "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="false" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+fxsr,+mmx,+sse,+sse2,+x87" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #3 = { "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="false" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+fxsr,+mmx,+sse,+sse2,+x87" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #4 = { nounwind readnone speculatable }
+attributes #5 = { nobuiltin nounwind }
+attributes #6 = { nobuiltin }
+
+!llvm.dbg.cu = !{!0}
+!llvm.module.flags = !{!6, !7, !8}
+!llvm.ident = !{!9}
+
+!0 = distinct !DICompileUnit(language: DW_LANG_C99, file: !1, producer: "clang version 6.0.0 (tags/RELEASE_600/final)", isOptimized: true, runtimeVersion: 0, emissionKind: FullDebug, enums: !2, retainedTypes: !3)
+!1 = !DIFile(filename: "reduction.c", directory: "/workspace/gem5-aladdin/src/aladdin/SHOC/reduction")
+!2 = !{}
+!3 = !{!4, !5}
+!4 = !DIDerivedType(tag: DW_TAG_pointer_type, baseType: !5, size: 64)
+!5 = !DIBasicType(name: "int", size: 32, encoding: DW_ATE_signed)
+!6 = !{i32 2, !"Dwarf Version", i32 4}
+!7 = !{i32 2, !"Debug Info Version", i32 3}
+!8 = !{i32 1, !"wchar_size", i32 4}
+!9 = !{!"clang version 6.0.0 (tags/RELEASE_600/final)"}
+!10 = distinct !DISubprogram(name: "reduction", scope: !1, file: !1, line: 7, type: !11, isLocal: false, isDefinition: true, scopeLine: 8, flags: DIFlagPrototyped, isOptimized: true, unit: !0, variables: !13)
+!11 = !DISubroutineType(types: !12)
+!12 = !{!5, !4}
+!13 = !{!14, !15, !16}
+!14 = !DILocalVariable(name: "in", arg: 1, scope: !10, file: !1, line: 7, type: !4)
+!15 = !DILocalVariable(name: "i", scope: !10, file: !1, line: 9, type: !5)
+!16 = !DILocalVariable(name: "sum", scope: !10, file: !1, line: 9, type: !5)
+!17 = !DILocation(line: 7, column: 20, scope: !10)
+!18 = !DILocation(line: 9, column: 7, scope: !10)
+!19 = !DILocation(line: 9, column: 18, scope: !10)
+!20 = !DILocation(line: 13, column: 7, scope: !21)
+!21 = distinct !DILexicalBlock(scope: !10, file: !1, line: 13, column: 7)
+!22 = !DILocation(line: 14, column: 12, scope: !23)
+!23 = distinct !DILexicalBlock(scope: !21, file: !1, line: 13, column: 7)
+!24 = !{!25, !25, i64 0}
+!25 = !{!"int", !26, i64 0}
+!26 = !{!"omnipotent char", !27, i64 0}
+!27 = !{!"Simple C/C++ TBAA"}
+!28 = !DILocation(line: 14, column: 9, scope: !23)
+!29 = !DILocation(line: 13, column: 29, scope: !23)
+!30 = !DILocation(line: 13, column: 21, scope: !23)
+!31 = distinct !{!31, !20, !32}
+!32 = !DILocation(line: 14, column: 16, scope: !21)
+!33 = !DILocation(line: 16, column: 3, scope: !10)
+!34 = distinct !DISubprogram(name: "main", scope: !1, file: !1, line: 20, type: !35, isLocal: false, isDefinition: true, scopeLine: 21, isOptimized: true, unit: !0, variables: !37)
+!35 = !DISubroutineType(types: !36)
+!36 = !{!5}
+!37 = !{!38, !39, !40, !41, !42}
+!38 = !DILocalVariable(name: "in", scope: !34, file: !1, line: 22, type: !4)
+!39 = !DILocalVariable(name: "i", scope: !34, file: !1, line: 25, type: !5)
+!40 = !DILocalVariable(name: "max", scope: !34, file: !1, line: 26, type: !5)
+!41 = !DILocalVariable(name: "min", scope: !34, file: !1, line: 27, type: !5)
+!42 = !DILocalVariable(name: "sum", scope: !34, file: !1, line: 37, type: !5)
+!43 = !DILocation(line: 23, column: 16, scope: !34)
+!44 = !DILocation(line: 23, column: 8, scope: !34)
+!45 = !DILocation(line: 22, column: 8, scope: !34)
+!46 = !DILocation(line: 26, column: 7, scope: !34)
+!47 = !DILocation(line: 27, column: 7, scope: !34)
+!48 = !DILocation(line: 28, column: 3, scope: !34)
+!49 = !DILocation(line: 25, column: 7, scope: !34)
+!50 = !DILocation(line: 29, column: 3, scope: !51)
+!51 = distinct !DILexicalBlock(scope: !34, file: !1, line: 29, column: 3)
+!52 = !DILocation(line: 31, column: 25, scope: !53)
+!53 = distinct !DILexicalBlock(scope: !54, file: !1, line: 30, column: 3)
+!54 = distinct !DILexicalBlock(scope: !51, file: !1, line: 29, column: 3)
+!55 = !DILocation(line: 31, column: 38, scope: !53)
+!56 = !DILocation(line: 31, column: 52, scope: !53)
+!57 = !DILocation(line: 31, column: 23, scope: !53)
+!58 = !DILocation(line: 31, column: 13, scope: !53)
+!59 = !DILocation(line: 31, column: 5, scope: !53)
+!60 = !DILocation(line: 31, column: 11, scope: !53)
+!61 = !DILocation(line: 29, column: 25, scope: !54)
+!62 = !DILocation(line: 29, column: 17, scope: !54)
+!63 = distinct !{!63, !50, !64}
+!64 = !DILocation(line: 32, column: 3, scope: !51)
+!65 = !DILocation(line: 37, column: 13, scope: !34)
+!66 = !DILocation(line: 37, column: 7, scope: !34)
+!67 = !DILocation(line: 41, column: 3, scope: !34)
+!68 = !DILocation(line: 42, column: 3, scope: !34)

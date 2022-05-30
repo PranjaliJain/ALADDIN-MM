@@ -1,0 +1,284 @@
+; ModuleID = 'triad.c'
+source_filename = "triad.c"
+target datalayout = "e-m:e-i64:64-f80:128-n8:16:32:64-S128"
+target triple = "x86_64-unknown-linux-gnu"
+
+%struct._IO_FILE = type { i32, i8*, i8*, i8*, i8*, i8*, i8*, i8*, i8*, i8*, i8*, i8*, %struct._IO_marker*, %struct._IO_FILE*, i32, i32, i64, i16, i8, [1 x i8], i8*, i64, i8*, i8*, i8*, i8*, i64, i32, [20 x i8] }
+%struct._IO_marker = type { %struct._IO_marker*, %struct._IO_FILE*, i32 }
+
+@.str = private unnamed_addr constant [12 x i8] c"output.data\00", align 1
+@.str.1 = private unnamed_addr constant [2 x i8] c"w\00", align 1
+@.str.2 = private unnamed_addr constant [4 x i8] c"%d,\00", align 1
+@.str.3 = private unnamed_addr constant [2 x i8] c"\0A\00", align 1
+
+; Function Attrs: noinline nounwind uwtable
+define void @triad(i32* nocapture readonly %a, i32* nocapture readonly %b, i32* nocapture %c, i32 %s) local_unnamed_addr #0 !dbg !10 {
+  call void @llvm.dbg.value(metadata i32* %a, metadata !14, metadata !DIExpression()), !dbg !19
+  call void @llvm.dbg.value(metadata i32* %b, metadata !15, metadata !DIExpression()), !dbg !20
+  call void @llvm.dbg.value(metadata i32* %c, metadata !16, metadata !DIExpression()), !dbg !21
+  call void @llvm.dbg.value(metadata i32 %s, metadata !17, metadata !DIExpression()), !dbg !22
+  call void @llvm.dbg.value(metadata i32 0, metadata !18, metadata !DIExpression()), !dbg !23
+  br label %1, !dbg !24
+
+; <label>:1:                                      ; preds = %1, %0
+  %indvars.iv = phi i64 [ 0, %0 ], [ %indvars.iv.next, %1 ]
+  call void @llvm.dbg.value(metadata i64 %indvars.iv, metadata !18, metadata !DIExpression()), !dbg !23
+  %arrayidx = getelementptr inbounds i32, i32* %a, i64 %indvars.iv, !dbg !26
+  %2 = load i32, i32* %arrayidx, align 4, !dbg !26, !tbaa !28
+  %arrayidx2 = getelementptr inbounds i32, i32* %b, i64 %indvars.iv, !dbg !32
+  %3 = load i32, i32* %arrayidx2, align 4, !dbg !32, !tbaa !28
+  %mul = mul nsw i32 %3, %s, !dbg !33
+  %add = add nsw i32 %mul, %2, !dbg !34
+  %arrayidx4 = getelementptr inbounds i32, i32* %c, i64 %indvars.iv, !dbg !35
+  store i32 %add, i32* %arrayidx4, align 4, !dbg !36, !tbaa !28
+  %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1, !dbg !37
+  %exitcond = icmp eq i64 %indvars.iv.next, 2048, !dbg !38
+  br i1 %exitcond, label %4, label %1, !dbg !24, !llvm.loop !39
+
+; <label>:4:                                      ; preds = %1
+  ret void, !dbg !41
+}
+
+; Function Attrs: noinline nounwind uwtable
+define i32 @main() local_unnamed_addr #0 !dbg !42 {
+  %call = tail call noalias i8* @malloc(i64 8192) #4, !dbg !113
+  %1 = bitcast i8* %call to i32*, !dbg !114
+  call void @llvm.dbg.value(metadata i32* %1, metadata !46, metadata !DIExpression()), !dbg !115
+  %call1 = tail call noalias i8* @malloc(i64 8192) #4, !dbg !116
+  %2 = bitcast i8* %call1 to i32*, !dbg !117
+  call void @llvm.dbg.value(metadata i32* %2, metadata !47, metadata !DIExpression()), !dbg !118
+  %call2 = tail call noalias i8* @malloc(i64 8192) #4, !dbg !119
+  %3 = bitcast i8* %call2 to i32*, !dbg !120
+  call void @llvm.dbg.value(metadata i32* %3, metadata !48, metadata !DIExpression()), !dbg !121
+  %call3 = tail call i64 @time(i64* null) #4, !dbg !122
+  %conv = trunc i64 %call3 to i32, !dbg !122
+  tail call void @srand(i32 %conv) #4, !dbg !123
+  call void @llvm.dbg.value(metadata i32 0, metadata !49, metadata !DIExpression()), !dbg !124
+  br label %4, !dbg !125
+
+; <label>:4:                                      ; preds = %4, %0
+  %indvars.iv42 = phi i64 [ 0, %0 ], [ %indvars.iv.next43, %4 ]
+  call void @llvm.dbg.value(metadata i64 %indvars.iv42, metadata !49, metadata !DIExpression()), !dbg !124
+  %arrayidx = getelementptr inbounds i32, i32* %3, i64 %indvars.iv42, !dbg !127
+  store i32 0, i32* %arrayidx, align 4, !dbg !130, !tbaa !28
+  %call5 = tail call i32 @rand() #4, !dbg !131
+  %arrayidx7 = getelementptr inbounds i32, i32* %1, i64 %indvars.iv42, !dbg !132
+  store i32 %call5, i32* %arrayidx7, align 4, !dbg !133, !tbaa !28
+  %call8 = tail call i32 @rand() #4, !dbg !134
+  %arrayidx10 = getelementptr inbounds i32, i32* %2, i64 %indvars.iv42, !dbg !135
+  store i32 %call8, i32* %arrayidx10, align 4, !dbg !136, !tbaa !28
+  %indvars.iv.next43 = add nuw nsw i64 %indvars.iv42, 1, !dbg !137
+  %exitcond44 = icmp eq i64 %indvars.iv.next43, 2048, !dbg !138
+  br i1 %exitcond44, label %5, label %4, !dbg !125, !llvm.loop !139
+
+; <label>:5:                                      ; preds = %4
+  tail call void @triad(i32* nonnull %1, i32* nonnull %2, i32* nonnull %3, i32 3) #5, !dbg !141
+  %call14 = tail call %struct._IO_FILE* @fopen(i8* getelementptr inbounds ([12 x i8], [12 x i8]* @.str, i64 0, i64 0), i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.1, i64 0, i64 0)) #4, !dbg !142
+  call void @llvm.dbg.value(metadata %struct._IO_FILE* %call14, metadata !50, metadata !DIExpression()), !dbg !143
+  call void @llvm.dbg.value(metadata i32 0, metadata !49, metadata !DIExpression()), !dbg !124
+  br label %6, !dbg !144
+
+; <label>:6:                                      ; preds = %6, %5
+  %indvars.iv = phi i64 [ 0, %5 ], [ %indvars.iv.next, %6 ]
+  call void @llvm.dbg.value(metadata i64 %indvars.iv, metadata !49, metadata !DIExpression()), !dbg !124
+  %arrayidx18 = getelementptr inbounds i32, i32* %3, i64 %indvars.iv, !dbg !146
+  %7 = load i32, i32* %arrayidx18, align 4, !dbg !146, !tbaa !28
+  %call19 = tail call i32 (%struct._IO_FILE*, i8*, ...) @fprintf(%struct._IO_FILE* %call14, i8* getelementptr inbounds ([4 x i8], [4 x i8]* @.str.2, i64 0, i64 0), i32 %7) #4, !dbg !148
+  %indvars.iv.next = add nuw nsw i64 %indvars.iv, 1, !dbg !149
+  %exitcond = icmp eq i64 %indvars.iv.next, 2048, !dbg !150
+  br i1 %exitcond, label %8, label %6, !dbg !144, !llvm.loop !151
+
+; <label>:8:                                      ; preds = %6
+  %call21 = tail call i32 (%struct._IO_FILE*, i8*, ...) @fprintf(%struct._IO_FILE* %call14, i8* getelementptr inbounds ([2 x i8], [2 x i8]* @.str.3, i64 0, i64 0)) #4, !dbg !153
+  %call22 = tail call i32 @fclose(%struct._IO_FILE* %call14) #4, !dbg !154
+  ret i32 0, !dbg !155
+}
+
+; Function Attrs: nounwind
+declare noalias i8* @malloc(i64) local_unnamed_addr #1
+
+; Function Attrs: nounwind
+declare void @srand(i32) local_unnamed_addr #1
+
+; Function Attrs: nounwind
+declare i64 @time(i64*) local_unnamed_addr #1
+
+; Function Attrs: nounwind
+declare i32 @rand() local_unnamed_addr #1
+
+declare %struct._IO_FILE* @fopen(i8*, i8*) local_unnamed_addr #2
+
+declare i32 @fprintf(%struct._IO_FILE*, i8*, ...) local_unnamed_addr #2
+
+declare i32 @fclose(%struct._IO_FILE*) local_unnamed_addr #2
+
+; Function Attrs: nounwind readnone speculatable
+declare void @llvm.dbg.value(metadata, metadata, metadata) #3
+
+attributes #0 = { noinline nounwind uwtable "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="false" "no-infs-fp-math"="false" "no-jump-tables"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+fxsr,+mmx,+sse,+sse2,+x87" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #1 = { nounwind "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="false" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+fxsr,+mmx,+sse,+sse2,+x87" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #2 = { "correctly-rounded-divide-sqrt-fp-math"="false" "disable-tail-calls"="false" "less-precise-fpmad"="false" "no-frame-pointer-elim"="false" "no-infs-fp-math"="false" "no-nans-fp-math"="false" "no-signed-zeros-fp-math"="false" "no-trapping-math"="false" "stack-protector-buffer-size"="8" "target-cpu"="x86-64" "target-features"="+fxsr,+mmx,+sse,+sse2,+x87" "unsafe-fp-math"="false" "use-soft-float"="false" }
+attributes #3 = { nounwind readnone speculatable }
+attributes #4 = { nobuiltin nounwind }
+attributes #5 = { nobuiltin }
+
+!llvm.dbg.cu = !{!0}
+!llvm.module.flags = !{!6, !7, !8}
+!llvm.ident = !{!9}
+
+!0 = distinct !DICompileUnit(language: DW_LANG_C99, file: !1, producer: "clang version 6.0.0 (tags/RELEASE_600/final)", isOptimized: true, runtimeVersion: 0, emissionKind: FullDebug, enums: !2, retainedTypes: !3)
+!1 = !DIFile(filename: "triad.c", directory: "/workspace/gem5-aladdin/src/aladdin/SHOC/triad")
+!2 = !{}
+!3 = !{!4}
+!4 = !DIDerivedType(tag: DW_TAG_pointer_type, baseType: !5, size: 64)
+!5 = !DIBasicType(name: "int", size: 32, encoding: DW_ATE_signed)
+!6 = !{i32 2, !"Dwarf Version", i32 4}
+!7 = !{i32 2, !"Debug Info Version", i32 3}
+!8 = !{i32 1, !"wchar_size", i32 4}
+!9 = !{!"clang version 6.0.0 (tags/RELEASE_600/final)"}
+!10 = distinct !DISubprogram(name: "triad", scope: !1, file: !1, line: 7, type: !11, isLocal: false, isDefinition: true, scopeLine: 7, flags: DIFlagPrototyped, isOptimized: true, unit: !0, variables: !13)
+!11 = !DISubroutineType(types: !12)
+!12 = !{null, !4, !4, !4, !5}
+!13 = !{!14, !15, !16, !17, !18}
+!14 = !DILocalVariable(name: "a", arg: 1, scope: !10, file: !1, line: 7, type: !4)
+!15 = !DILocalVariable(name: "b", arg: 2, scope: !10, file: !1, line: 7, type: !4)
+!16 = !DILocalVariable(name: "c", arg: 3, scope: !10, file: !1, line: 7, type: !4)
+!17 = !DILocalVariable(name: "s", arg: 4, scope: !10, file: !1, line: 7, type: !5)
+!18 = !DILocalVariable(name: "i", scope: !10, file: !1, line: 14, type: !5)
+!19 = !DILocation(line: 7, column: 17, scope: !10)
+!20 = !DILocation(line: 7, column: 24, scope: !10)
+!21 = !DILocation(line: 7, column: 32, scope: !10)
+!22 = !DILocation(line: 7, column: 39, scope: !10)
+!23 = !DILocation(line: 14, column: 7, scope: !10)
+!24 = !DILocation(line: 15, column: 9, scope: !25)
+!25 = distinct !DILexicalBlock(scope: !10, file: !1, line: 15, column: 9)
+!26 = !DILocation(line: 16, column: 12, scope: !27)
+!27 = distinct !DILexicalBlock(scope: !25, file: !1, line: 15, column: 9)
+!28 = !{!29, !29, i64 0}
+!29 = !{!"int", !30, i64 0}
+!30 = !{!"omnipotent char", !31, i64 0}
+!31 = !{!"Simple C/C++ TBAA"}
+!32 = !DILocation(line: 16, column: 21, scope: !27)
+!33 = !DILocation(line: 16, column: 20, scope: !27)
+!34 = !DILocation(line: 16, column: 17, scope: !27)
+!35 = !DILocation(line: 16, column: 5, scope: !27)
+!36 = !DILocation(line: 16, column: 10, scope: !27)
+!37 = !DILocation(line: 15, column: 24, scope: !27)
+!38 = !DILocation(line: 15, column: 18, scope: !27)
+!39 = distinct !{!39, !24, !40}
+!40 = !DILocation(line: 16, column: 24, scope: !25)
+!41 = !DILocation(line: 21, column: 1, scope: !10)
+!42 = distinct !DISubprogram(name: "main", scope: !1, file: !1, line: 23, type: !43, isLocal: false, isDefinition: true, scopeLine: 23, isOptimized: true, unit: !0, variables: !45)
+!43 = !DISubroutineType(types: !44)
+!44 = !{!5}
+!45 = !{!46, !47, !48, !49, !50}
+!46 = !DILocalVariable(name: "a", scope: !42, file: !1, line: 24, type: !4)
+!47 = !DILocalVariable(name: "b", scope: !42, file: !1, line: 24, type: !4)
+!48 = !DILocalVariable(name: "c", scope: !42, file: !1, line: 24, type: !4)
+!49 = !DILocalVariable(name: "i", scope: !42, file: !1, line: 28, type: !5)
+!50 = !DILocalVariable(name: "output", scope: !42, file: !1, line: 42, type: !51)
+!51 = !DIDerivedType(tag: DW_TAG_pointer_type, baseType: !52, size: 64)
+!52 = !DIDerivedType(tag: DW_TAG_typedef, name: "FILE", file: !53, line: 7, baseType: !54)
+!53 = !DIFile(filename: "/usr/include/x86_64-linux-gnu/bits/types/FILE.h", directory: "/workspace/gem5-aladdin/src/aladdin/SHOC/triad")
+!54 = distinct !DICompositeType(tag: DW_TAG_structure_type, name: "_IO_FILE", file: !55, line: 245, size: 1728, elements: !56)
+!55 = !DIFile(filename: "/usr/include/x86_64-linux-gnu/bits/libio.h", directory: "/workspace/gem5-aladdin/src/aladdin/SHOC/triad")
+!56 = !{!57, !58, !61, !62, !63, !64, !65, !66, !67, !68, !69, !70, !71, !79, !80, !81, !82, !86, !88, !90, !94, !97, !99, !101, !102, !103, !104, !108, !109}
+!57 = !DIDerivedType(tag: DW_TAG_member, name: "_flags", scope: !54, file: !55, line: 246, baseType: !5, size: 32)
+!58 = !DIDerivedType(tag: DW_TAG_member, name: "_IO_read_ptr", scope: !54, file: !55, line: 251, baseType: !59, size: 64, offset: 64)
+!59 = !DIDerivedType(tag: DW_TAG_pointer_type, baseType: !60, size: 64)
+!60 = !DIBasicType(name: "char", size: 8, encoding: DW_ATE_signed_char)
+!61 = !DIDerivedType(tag: DW_TAG_member, name: "_IO_read_end", scope: !54, file: !55, line: 252, baseType: !59, size: 64, offset: 128)
+!62 = !DIDerivedType(tag: DW_TAG_member, name: "_IO_read_base", scope: !54, file: !55, line: 253, baseType: !59, size: 64, offset: 192)
+!63 = !DIDerivedType(tag: DW_TAG_member, name: "_IO_write_base", scope: !54, file: !55, line: 254, baseType: !59, size: 64, offset: 256)
+!64 = !DIDerivedType(tag: DW_TAG_member, name: "_IO_write_ptr", scope: !54, file: !55, line: 255, baseType: !59, size: 64, offset: 320)
+!65 = !DIDerivedType(tag: DW_TAG_member, name: "_IO_write_end", scope: !54, file: !55, line: 256, baseType: !59, size: 64, offset: 384)
+!66 = !DIDerivedType(tag: DW_TAG_member, name: "_IO_buf_base", scope: !54, file: !55, line: 257, baseType: !59, size: 64, offset: 448)
+!67 = !DIDerivedType(tag: DW_TAG_member, name: "_IO_buf_end", scope: !54, file: !55, line: 258, baseType: !59, size: 64, offset: 512)
+!68 = !DIDerivedType(tag: DW_TAG_member, name: "_IO_save_base", scope: !54, file: !55, line: 260, baseType: !59, size: 64, offset: 576)
+!69 = !DIDerivedType(tag: DW_TAG_member, name: "_IO_backup_base", scope: !54, file: !55, line: 261, baseType: !59, size: 64, offset: 640)
+!70 = !DIDerivedType(tag: DW_TAG_member, name: "_IO_save_end", scope: !54, file: !55, line: 262, baseType: !59, size: 64, offset: 704)
+!71 = !DIDerivedType(tag: DW_TAG_member, name: "_markers", scope: !54, file: !55, line: 264, baseType: !72, size: 64, offset: 768)
+!72 = !DIDerivedType(tag: DW_TAG_pointer_type, baseType: !73, size: 64)
+!73 = distinct !DICompositeType(tag: DW_TAG_structure_type, name: "_IO_marker", file: !55, line: 160, size: 192, elements: !74)
+!74 = !{!75, !76, !78}
+!75 = !DIDerivedType(tag: DW_TAG_member, name: "_next", scope: !73, file: !55, line: 161, baseType: !72, size: 64)
+!76 = !DIDerivedType(tag: DW_TAG_member, name: "_sbuf", scope: !73, file: !55, line: 162, baseType: !77, size: 64, offset: 64)
+!77 = !DIDerivedType(tag: DW_TAG_pointer_type, baseType: !54, size: 64)
+!78 = !DIDerivedType(tag: DW_TAG_member, name: "_pos", scope: !73, file: !55, line: 166, baseType: !5, size: 32, offset: 128)
+!79 = !DIDerivedType(tag: DW_TAG_member, name: "_chain", scope: !54, file: !55, line: 266, baseType: !77, size: 64, offset: 832)
+!80 = !DIDerivedType(tag: DW_TAG_member, name: "_fileno", scope: !54, file: !55, line: 268, baseType: !5, size: 32, offset: 896)
+!81 = !DIDerivedType(tag: DW_TAG_member, name: "_flags2", scope: !54, file: !55, line: 272, baseType: !5, size: 32, offset: 928)
+!82 = !DIDerivedType(tag: DW_TAG_member, name: "_old_offset", scope: !54, file: !55, line: 274, baseType: !83, size: 64, offset: 960)
+!83 = !DIDerivedType(tag: DW_TAG_typedef, name: "__off_t", file: !84, line: 140, baseType: !85)
+!84 = !DIFile(filename: "/usr/include/x86_64-linux-gnu/bits/types.h", directory: "/workspace/gem5-aladdin/src/aladdin/SHOC/triad")
+!85 = !DIBasicType(name: "long int", size: 64, encoding: DW_ATE_signed)
+!86 = !DIDerivedType(tag: DW_TAG_member, name: "_cur_column", scope: !54, file: !55, line: 278, baseType: !87, size: 16, offset: 1024)
+!87 = !DIBasicType(name: "unsigned short", size: 16, encoding: DW_ATE_unsigned)
+!88 = !DIDerivedType(tag: DW_TAG_member, name: "_vtable_offset", scope: !54, file: !55, line: 279, baseType: !89, size: 8, offset: 1040)
+!89 = !DIBasicType(name: "signed char", size: 8, encoding: DW_ATE_signed_char)
+!90 = !DIDerivedType(tag: DW_TAG_member, name: "_shortbuf", scope: !54, file: !55, line: 280, baseType: !91, size: 8, offset: 1048)
+!91 = !DICompositeType(tag: DW_TAG_array_type, baseType: !60, size: 8, elements: !92)
+!92 = !{!93}
+!93 = !DISubrange(count: 1)
+!94 = !DIDerivedType(tag: DW_TAG_member, name: "_lock", scope: !54, file: !55, line: 284, baseType: !95, size: 64, offset: 1088)
+!95 = !DIDerivedType(tag: DW_TAG_pointer_type, baseType: !96, size: 64)
+!96 = !DIDerivedType(tag: DW_TAG_typedef, name: "_IO_lock_t", file: !55, line: 154, baseType: null)
+!97 = !DIDerivedType(tag: DW_TAG_member, name: "_offset", scope: !54, file: !55, line: 293, baseType: !98, size: 64, offset: 1152)
+!98 = !DIDerivedType(tag: DW_TAG_typedef, name: "__off64_t", file: !84, line: 141, baseType: !85)
+!99 = !DIDerivedType(tag: DW_TAG_member, name: "__pad1", scope: !54, file: !55, line: 301, baseType: !100, size: 64, offset: 1216)
+!100 = !DIDerivedType(tag: DW_TAG_pointer_type, baseType: null, size: 64)
+!101 = !DIDerivedType(tag: DW_TAG_member, name: "__pad2", scope: !54, file: !55, line: 302, baseType: !100, size: 64, offset: 1280)
+!102 = !DIDerivedType(tag: DW_TAG_member, name: "__pad3", scope: !54, file: !55, line: 303, baseType: !100, size: 64, offset: 1344)
+!103 = !DIDerivedType(tag: DW_TAG_member, name: "__pad4", scope: !54, file: !55, line: 304, baseType: !100, size: 64, offset: 1408)
+!104 = !DIDerivedType(tag: DW_TAG_member, name: "__pad5", scope: !54, file: !55, line: 306, baseType: !105, size: 64, offset: 1472)
+!105 = !DIDerivedType(tag: DW_TAG_typedef, name: "size_t", file: !106, line: 62, baseType: !107)
+!106 = !DIFile(filename: "/usr/local/lib/clang/6.0.0/include/stddef.h", directory: "/workspace/gem5-aladdin/src/aladdin/SHOC/triad")
+!107 = !DIBasicType(name: "long unsigned int", size: 64, encoding: DW_ATE_unsigned)
+!108 = !DIDerivedType(tag: DW_TAG_member, name: "_mode", scope: !54, file: !55, line: 307, baseType: !5, size: 32, offset: 1536)
+!109 = !DIDerivedType(tag: DW_TAG_member, name: "_unused2", scope: !54, file: !55, line: 309, baseType: !110, size: 160, offset: 1568)
+!110 = !DICompositeType(tag: DW_TAG_array_type, baseType: !60, size: 160, elements: !111)
+!111 = !{!112}
+!112 = !DISubrange(count: 20)
+!113 = !DILocation(line: 25, column: 17, scope: !42)
+!114 = !DILocation(line: 25, column: 9, scope: !42)
+!115 = !DILocation(line: 24, column: 7, scope: !42)
+!116 = !DILocation(line: 26, column: 17, scope: !42)
+!117 = !DILocation(line: 26, column: 9, scope: !42)
+!118 = !DILocation(line: 24, column: 11, scope: !42)
+!119 = !DILocation(line: 27, column: 17, scope: !42)
+!120 = !DILocation(line: 27, column: 9, scope: !42)
+!121 = !DILocation(line: 24, column: 15, scope: !42)
+!122 = !DILocation(line: 29, column: 9, scope: !42)
+!123 = !DILocation(line: 29, column: 3, scope: !42)
+!124 = !DILocation(line: 28, column: 6, scope: !42)
+!125 = !DILocation(line: 30, column: 2, scope: !126)
+!126 = distinct !DILexicalBlock(scope: !42, file: !1, line: 30, column: 2)
+!127 = !DILocation(line: 31, column: 3, scope: !128)
+!128 = distinct !DILexicalBlock(scope: !129, file: !1, line: 30, column: 22)
+!129 = distinct !DILexicalBlock(scope: !126, file: !1, line: 30, column: 2)
+!130 = !DILocation(line: 31, column: 8, scope: !128)
+!131 = !DILocation(line: 32, column: 10, scope: !128)
+!132 = !DILocation(line: 32, column: 3, scope: !128)
+!133 = !DILocation(line: 32, column: 8, scope: !128)
+!134 = !DILocation(line: 33, column: 10, scope: !128)
+!135 = !DILocation(line: 33, column: 3, scope: !128)
+!136 = !DILocation(line: 33, column: 8, scope: !128)
+!137 = !DILocation(line: 30, column: 19, scope: !129)
+!138 = !DILocation(line: 30, column: 12, scope: !129)
+!139 = distinct !{!139, !125, !140}
+!140 = !DILocation(line: 34, column: 2, scope: !126)
+!141 = !DILocation(line: 38, column: 2, scope: !42)
+!142 = !DILocation(line: 43, column: 12, scope: !42)
+!143 = !DILocation(line: 42, column: 9, scope: !42)
+!144 = !DILocation(line: 44, column: 2, scope: !145)
+!145 = distinct !DILexicalBlock(scope: !42, file: !1, line: 44, column: 2)
+!146 = !DILocation(line: 45, column: 28, scope: !147)
+!147 = distinct !DILexicalBlock(scope: !145, file: !1, line: 44, column: 2)
+!148 = !DILocation(line: 45, column: 5, scope: !147)
+!149 = !DILocation(line: 44, column: 19, scope: !147)
+!150 = !DILocation(line: 44, column: 12, scope: !147)
+!151 = distinct !{!151, !144, !152}
+!152 = !DILocation(line: 45, column: 32, scope: !145)
+!153 = !DILocation(line: 46, column: 3, scope: !42)
+!154 = !DILocation(line: 47, column: 3, scope: !42)
+!155 = !DILocation(line: 48, column: 2, scope: !42)

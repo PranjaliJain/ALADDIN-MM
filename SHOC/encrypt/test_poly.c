@@ -9,48 +9,37 @@ int main(){
     printf("Testing polynomial addition\n");
     int mod_degree = 4;
     int mod_coeffs[5] = {1, 0, 0, 0, 1};
-    struct poly* polymod = new_poly(mod_degree, mod_coeffs);
     printf("Polynomial modulo: ");
-    print_poly(polymod);
+    print_poly(mod_coeffs, mod_degree);
 
     int x_degree = 3;
     int y_degree = 3;
     int x_coeffs[4] = {9, 0, 4, 7};
     int y_coeffs[4] = {5, 3, 10, 1};
-    struct poly* x = new_poly(x_degree, x_coeffs);
-    struct poly* y = new_poly(y_degree, y_coeffs);
     printf("Input polynomials:\n");
-    print_poly(x);
-    print_poly(y);
-    struct poly* result = polyadd(x, y, 11, polymod);
+    print_poly(x_coeffs, x_degree);
+    print_poly(y_coeffs, y_degree);
+    int* result = polyadd(x_coeffs, x_degree, y_coeffs, y_degree, 11, 
+                          mod_coeffs, mod_degree);
     printf("Result: ");
-    print_poly(result);
+    print_poly(result, x_degree);
 
-    free_poly(x); free_poly(y); free_poly(result);
     //Test polynomial multiplication
     printf("Testing polynomial multiplication\n");
-    /*
-    int mod_degree = 4;
-    int mod_coeffs[5] = {1, 0, 0, 0, 1};
-    struct poly* polymod = new_poly(mod_degree, mod_coeffs);
-    */
-    printf("Polynomial modulo: ");
-    print_poly(polymod);
 
     x_degree = 2;
     y_degree = 3;
-    int x_coeffs_new[3] = {3, 0, 5};
-    int y_coeffs_new[4] = {0, 0, 4, 3};
-    x = new_poly(x_degree, x_coeffs_new);
-    y = new_poly(y_degree, y_coeffs_new);
+    int x[3] = {3, 0, 5};
+    int y[4] = {0, 0, 4, 3};
     printf("Input polynomials:\n");
-    print_poly(x);
-    print_poly(y);
-    result = polymul(x, y, 11, polymod);
+    print_poly(x, x_degree);
+    print_poly(y, y_degree);
+    result = polymul(x, x_degree, y, y_degree, 11, 
+                     mod_coeffs, mod_degree);
     printf("Result: ");
-    print_poly(result);
+    print_poly(result, mod_degree-1);
 
-    free_poly(x); free_poly(y); free_poly(result); free(polymod);
+    free(result);
     printf("Finished successfully\n");
     return 0;
 }

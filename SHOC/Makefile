@@ -10,9 +10,9 @@ BENCHMARKS=\
 	stencil \
 	triad \
 	mm \
-        encrypt
+	encrypt 
 
-CFLAGS=-O3 -Wall -Wno-unused-label
+CFLAGS=-O3 -Wall -Wno-unused-label 
 
 .PHONY: build run all test clean trace-binary dma-trace-binary run-trace clean-trace
 

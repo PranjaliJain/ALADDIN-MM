@@ -5,22 +5,20 @@ void free_tuple(tuple x){
     free(x);
 }
 
-struct poly* gen_binary_poly(int size){
+int* gen_binary_poly(int size){
     int* coeffs = (int*) malloc(size*sizeof(int));
-    int degree = size - 1;
     for(int i=0; i<size; i++){
         coeffs[i] = rand() % 2;
     }
-    return new_poly(degree, coeffs);
+    return coeffs;
 }
 
-poly* gen_uniform_poly(int size, int mod){
+int* gen_uniform_poly(int size, int mod){
     int* coeffs = (int*) malloc(size*sizeof(int));
-    int degree = size - 1;
     for(int i=0; i<size; i++){
         coeffs[i] = rand() % mod;
     }
-    return new_poly(degree, coeffs);
+    return coeffs;
 }
 
 int norm_rand(int mean, int std){
@@ -37,117 +35,111 @@ int norm_rand(int mean, int std){
     return (ret - 8);
 }
 
-poly* gen_normal_poly(int size){
+int* gen_normal_poly(int size){
     int* coeffs = (int*) malloc(size*sizeof(int));
-    int degree = size - 1;
     for(int i=0; i<size; i++){
         coeffs[i] = norm_rand(0, 2);
     }
-    return new_poly(degree, coeffs);
+    return coeffs;
 }
 
-poly* gen_const_poly(int size, int val){
-    int degree = size-1;
+int* gen_const_poly(int size, int val){
     int* coeffs = (int*) malloc(size*sizeof(int));
     coeffs[0] = val;
     for(int i=1; i<size; i++){
         coeffs[i] = 0;
     }
-    return new_poly(degree, coeffs);
+    return coeffs;
 }
 
-poly* keygen_secret(int size){
+int* keygen_secret(int size){
     return gen_binary_poly(size);
 }
 
-tuple keygen_public(int size, int mod, poly* secret, poly* polymod){
-    poly* a = gen_uniform_poly(size, mod);
-    poly* e = gen_normal_poly(size);
-    poly* aneg = neg_poly(a, mod);
-    poly* tmp = polymul(aneg, secret, mod, polymod);
-    poly* eneg = neg_poly(e, mod);
-    poly* b = polyadd(tmp, eneg, mod, polymod);
-    free_poly(aneg); free_poly(eneg); free_poly(tmp);
-    tuple ret = (tuple) malloc(2*sizeof(poly*));
-    ret[0] = b; ret[1] = a;
-    return ret;
+int* keygen_pub1(int size, int mod){
+    return gen_uniform_poly(size, mod);
 }
 
-tuple encrypt(tuple publicKey, int size, int q,
-              int t, poly* polymod, int val){
-    poly* val_poly = gen_const_poly(size, val);
+//keygen_pub1 must be called before pub0
+int* keygen_pub0(int* a, int size, int mod, int* secret, int* polymod){
+    int* e = gen_normal_poly(size);
+    neg_poly(a, size, mod);
+    int deg = size - 1;
+    int* tmp = polymul(a, deg, secret, deg, mod, polymod, size);
+    neg_poly(e, deg, mod);
+    int* b = polyadd(tmp, deg, e, deg, mod, polymod, size);
+    return b;
+}
+
+int** encrypt(int* pub0, int* pub1, int size, int q,
+              int t, int* polymod, int val){
+    int* val_poly = gen_const_poly(size, val);
     int delta = q/t;
-    poly* scaled_m = scalar_mul(val_poly, delta, q);
-    poly* e1 = gen_normal_poly(size);
-    poly* e2 = gen_normal_poly(size);
-    poly* u = gen_binary_poly(size);
-    poly* mul1 = polymul(publicKey[0], u, q, polymod);
-    poly* add1 = polyadd(mul1, e1, q, polymod);
-    poly* ct0 = polyadd(add1, scaled_m, q, polymod);
-    free_poly(e1); free_poly(mul1); free_poly(add1);
-    free_poly(scaled_m);
-    mul1 = polymul(publicKey[1], u, q, polymod);
-    poly* ct1 = polyadd(mul1, e2, q, polymod);
-    free_poly(mul1); free_poly(e2); free_poly(u);
-    free_poly(val_poly);
-    tuple ret = (tuple) malloc(2*sizeof(poly*));
-    ret[0] = ct0; ret[1] = ct1;
-    return ret;
+    scalar_mul(val_poly, size, delta, q);
+    int* e1 = gen_normal_poly(size);
+    int* e2 = gen_normal_poly(size);
+    int* u = gen_binary_poly(size);
+    int deg = size-1;
+    int* mul1 = polymul(pub0, deg, u, deg, q, polymod, size);
+    int* add1 = polyadd(mul1, deg, e1, deg, q, polymod, size);
+    int* ct0 = polyadd(add1, deg, val_poly, deg, q, polymod, size);
+    int* mul2 = polymul(pub1, deg, u, deg, q, polymod, size);
+    int* ct1 = polyadd(mul2, deg, e2, deg, q, polymod, size);
+    int** cipher = (int**) malloc(2*sizeof(int*));
+    cipher[0] = ct0; cipher[1] = ct1;
+    return cipher;
 }
 
-int decrypt(poly* secretKey, int size, int q, int t, 
-            poly* polymod, tuple cipher){
-    poly* mul1 = polymul(cipher[1], secretKey, q, polymod);
-    poly* scaled_pt = polyadd(mul1, cipher[0], q, polymod);
+int decrypt(int* secretKey, int size, int q, int t, 
+            int* polymod, int* cipher0, int* cipher1){
+    int deg = size - 1;
+    int* mul1 = polymul(cipher1, deg, secretKey, deg, q, polymod, size);
+    int* scaled_pt = polyadd(mul1, deg, cipher0, deg, q, polymod, size);
     double delta_inv = (double) t / (double) q;
-    double enc_val = (double) scaled_pt->coeffs[0];
+    double enc_val = (double) scaled_pt[0];
     int ret = ((int) round(enc_val*delta_inv)) % q;
-    free_poly(mul1); free_poly(scaled_pt);
     return ret;
 }
 
-tuple plain_add(tuple cipher, int val, int q, int t, poly* polymod){
+int* plain_add(int* cipher0, int size, int val, int q, int t, int* polymod){
+    int deg = size-1;
     int delta = q/t;
-    poly* plain_poly = gen_const_poly(polymod->degree-1, val%t);
-    poly* scaled_m = scalar_mul(plain_poly, delta, q);
-    poly* new_ct0 = polyadd(cipher[0], scaled_m, q, polymod);
-    tuple ret = (tuple) malloc(2*sizeof(poly*));
-    ret[0] = new_ct0; ret[1] = copy_poly(cipher[1]);
-    free_poly(plain_poly); free_poly(scaled_m);
-    return ret;
+    int* plain_poly = gen_const_poly(size, val%t);
+    scalar_mul(plain_poly, deg, delta, q);
+    int* new_ct0 = polyadd(cipher0, deg, plain_poly, deg, q, polymod, size);
+    return new_ct0;
 }
 
-tuple plain_mul(tuple cipher, int val, int q, int t, poly* polymod){
-    poly* plain_poly = gen_const_poly(polymod->degree-1, val%t);
-    poly* new_ct0 = polymul(cipher[0], plain_poly, q, polymod);
-    poly* new_ct1 = polymul(cipher[1], plain_poly, q, polymod);
-    tuple ret = (tuple) malloc(2*sizeof(poly*));
+int** plain_mul(int* cipher0, int* cipher1, int size,
+                int val, int q, int t, int* polymod){
+    int deg = size - 1;
+    int* plain_poly = gen_const_poly(deg, val%t);
+    int* new_ct0 = polymul(cipher0, deg, plain_poly, deg, q, polymod, size);
+    int* new_ct1 = polymul(cipher1, deg, plain_poly, deg, q, polymod, size);
+    int** ret = (int**) malloc(2*sizeof(int*));
     ret[0] = new_ct0; ret[1] = new_ct1;
-    free_poly(plain_poly);
+    free(plain_poly);
     return ret; 
 }
 
-tuple crypto_add(tuple cipher1, tuple cipher2, int q, poly* polymod){
-    poly* new_ct0 = polyadd(cipher1[0], cipher2[0], q, polymod);
-    poly* new_ct1 = polyadd(cipher1[1], cipher2[1], q, polymod);
-    tuple ret = (tuple) malloc(2*sizeof(poly*));
+int** crypto_add(int** cipher1, int** cipher2, int size, int q, int* polymod){
+    int deg = size-1;
+    int* new_ct0 = polyadd(cipher1[0], deg, cipher2[0], deg, q, polymod, size);
+    int* new_ct1 = polyadd(cipher1[1], deg, cipher2[1], deg, q, polymod, size);
+    int** ret = (int**) malloc(2*sizeof(int*));
     ret[0] = new_ct0; ret[1] = new_ct1;
     return ret;
 }
 
-tuple vector_mult(tuple* x, int* y, int size, int q, int t, poly* polymod){
-    tuple* mul_results = (tuple*) malloc(size*sizeof(tuple));
-    for(int i=0; i<size; i++){
-        mul_results[i] = plain_mul(x[i], y[i], q, t, polymod);
+int** vector_mult(int*** x, int* y, int poly_size, int ar_size, 
+                  int q, int t, int* polymod){
+    loop_vector_mult_mult:for(int i=0; i<ar_size; i++){
+        x[i] = plain_mul(x[i][0], x[i][1], poly_size, y[i], q, t, polymod);
     }
-    tuple reduce = mul_results[0];
-    for(int i=1; i<size; i++){
-        tuple tmp = reduce;
-        reduce = crypto_add(reduce, mul_results[i], q, polymod);
-        free_tuple(tmp);
+    int** reduce = x[0];
+    loop_vector_mult_add:for(int i=1; i<ar_size; i++){
+        reduce = crypto_add(reduce, x[i], poly_size, q, polymod);
     }
-    for(int i=1; i<size; i++) free_tuple(mul_results[i]);
-    free(mul_results);
     return reduce;
 
 }

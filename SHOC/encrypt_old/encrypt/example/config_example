@@ -1,0 +1,8 @@
+partition,block,polymod,8192,8,2
+partition,block,cipher,8192,8,1
+partition,block,degree1,39407000,8,1
+partition,block,call,299000,8,1
+partition,block,call35,8192,8,1
+partition,block,call3,8192,8,1
+partition,block,call4,8192,8,1
+cycle_time,10

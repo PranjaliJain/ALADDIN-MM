@@ -1,0 +1,36 @@
+Array: coeffs, size = 8192, partitions = 1, word size = 8, reads = 6, writes = 0
+Array: call, size = 8192, partitions = 1, word size = 8, reads = 1, writes = 7
+Array: degree1, size = 36781200, partitions = 1, word size = 8, reads = 0, writes = 1
+Array: x, size = 8192, partitions = 1, word size = 8, reads = 0, writes = 0
+===============
+Array: coeffs, size = 8192, partitions = 1, word size = 8, reads = 6, writes = 0
+Array: call, size = 8192, partitions = 1, word size = 8, reads = 1, writes = 7
+Array: degree1, size = 36781600, partitions = 1, word size = 8, reads = 0, writes = 1
+Array: x, size = 8192, partitions = 1, word size = 8, reads = 0, writes = 0
+===============
+Array: coeffs, size = 8192, partitions = 1, word size = 8, reads = 12, writes = 0
+Array: call, size = 8192, partitions = 1, word size = 8, reads = 2, writes = 14
+Array: degree1, size = 36781600, partitions = 1, word size = 8, reads = 0, writes = 2
+Array: x, size = 8192, partitions = 1, word size = 8, reads = 0, writes = 0
+===============
+Array: coeffs, size = 8192, partitions = 1, word size = 8, reads = 0, writes = 0
+Array: call, size = 8192, partitions = 1, word size = 8, reads = 7, writes = 13
+Array: degree1, size = 39407000, partitions = 1, word size = 8, reads = 0, writes = 1
+Array: x, size = 8192, partitions = 1, word size = 8, reads = 10, writes = 0
+===============
+Array: call3, size = 8192, partitions = 1, word size = 8, reads = 32, writes = 32
+Array: cipher, size = 8192, partitions = 1, word size = 8, reads = 72, writes = 0
+Array: call4, size = 8192, partitions = 1, word size = 8, reads = 0, writes = 2
+Array: degree1, size = 39407000, partitions = 1, word size = 8, reads = 0, writes = 5
+Array: call35, size = 8192, partitions = 1, word size = 8, reads = 94, writes = 0
+Array: polymod, size = 8192, partitions = 1, word size = 8, reads = 7, writes = 0
+Array: call, size = 299000, partitions = 1, word size = 8, reads = 1109, writes = 667
+===============
+Array: call3, size = 8192, partitions = 1, word size = 8, reads = 32, writes = 32
+Array: cipher, size = 8192, partitions = 1, word size = 8, reads = 72, writes = 0
+Array: call4, size = 8192, partitions = 1, word size = 8, reads = 0, writes = 2
+Array: degree1, size = 39407000, partitions = 1, word size = 8, reads = 0, writes = 5
+Array: call35, size = 8192, partitions = 1, word size = 8, reads = 94, writes = 0
+Array: polymod, size = 8192, partitions = 2, word size = 8, reads = 7, writes = 0
+Array: call, size = 299000, partitions = 1, word size = 8, reads = 1109, writes = 667
+===============

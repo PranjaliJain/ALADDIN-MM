@@ -12,33 +12,37 @@ typedef poly** tuple;
 
 void free_tuple(tuple x);
 
-poly* gen_binary_poly(int size);
+int* gen_binary_poly(int size);
 
-poly* gen_uniform_poly(int size, int mod);
+int* gen_uniform_poly(int size, int mod);
 
 int norm_rand(int mean, int std);
 
-poly* gen_normal_poly(int size);
+int* gen_normal_poly(int size);
 
-poly* gen_const_poly(int size, int val);
+int* gen_const_poly(int size, int val);
 
-poly* keygen_secret(int size);
+int* keygen_secret(int size);
 
-tuple keygen_public(int size, int mod, poly* secret, poly* polymod);
+int* keygen_pub1(int size, int mod);
 
-tuple encrypt(tuple publicKey, int size, int q,
-              int t, poly* polymod, int val);
+int* keygen_pub0(int* a, int size, int mod, int* secret, int* polymod);
 
-int decrypt(poly* secretKey, int size, int q, int t, 
-            poly* polymod, tuple cipher);
+int** encrypt(int* pub0, int* pub1, int size, int q,
+              int t, int* polymod, int val);
 
-tuple plain_add(tuple cipher, int val, int q, int t, poly* polymod);
+int decrypt(int* secretKey, int size, int q, int t, 
+            int* polymod, int* cipher0, int* cipher1);
 
-tuple plain_mul(tuple cipher, int val, int q, int t, poly* polymod);
+int* plain_add(int* cipher0, int size, int val, int q, int t, int* polymod);
 
-tuple crypto_add(tuple cipher1, tuple cipher2, int q, poly* polymod);
+int** plain_mul(int* cipher0, int* cipher1, int size,
+                int val, int q, int t, int* polymod);
 
-tuple vector_mult(tuple* x, int* y, int size, int q, int t, poly* polymod);
+int** crypto_add(int** cipher1, int** cipher2, int size, int q, int* polymod);
+
+int** vector_mult(int*** x, int* y, int poly_size, int ar_size, 
+                  int q, int t, int* polymod);
 
 
 #endif
